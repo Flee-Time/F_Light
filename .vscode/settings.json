@@ -1,0 +1,13 @@
+{
+    "files.associations": {
+        "stm32f4xx_hal.h": "c",
+        "math.h": "c",
+        "stdlib.h": "c",
+        "*.xbm": "cpp",
+        "hacker.h": "c",
+        "l_screen.h": "c",
+        "typeinfo": "c",
+        "m_back.h": "c",
+        "window.h": "c"
+    }
+}
