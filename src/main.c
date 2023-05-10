@@ -13,7 +13,6 @@ static void MX_RTC_Init(void);
 void reset_datetime(void);
 
 char showtime[7];
-uint8_t m_sel = 0;
 RTC_TimeTypeDef sTime = {0};
 RTC_DateTypeDef sDate = {0};
 
@@ -36,22 +35,11 @@ int main(void)
   /* Infinite loop */
   while (1)
   {
-    if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_14) && m_sel < 2)
-    {
-      m_sel++;
-      HAL_Delay(150);
-    }
-    else if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_12) && m_sel > 0)
-    {
-      m_sel--;
-      HAL_Delay(150);
-    }
-
     HAL_RTC_GetTime(&hrtc, &sTime, RTC_FORMAT_BIN);
     HAL_RTC_GetDate(&hrtc, &sDate, RTC_FORMAT_BIN);
     sprintf(showtime,"%0.2d:%0.2d:%0.2d", sTime.Hours, sTime.Minutes, sTime.Seconds);
 
-    drawScreen(showtime, m_sel, 3);
+    drawScreen(showtime, 3);
   }
 }
 

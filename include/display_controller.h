@@ -13,6 +13,6 @@
 // Public Functions
 void initDisplay(void);
 void loadingScreen(void);
-void drawScreen(char time[7], uint8_t selection, uint8_t battery_level);
+void drawScreen(char time[7], uint8_t battery_level);
 
 #endif
