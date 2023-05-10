@@ -109,48 +109,23 @@ void displayMenu(const Menu* menu, uint8_t selection) {
     u8g2_DrawStr(&u8g2, 65, 9, menu->title);
     u8g2_DrawBox(&u8g2, 124, 5 + 54.5/menu->num_items * selection, 3, 54.5/menu->num_items);
 
-
-    if (selection < 3)
+    for (int i = (selection < (menu->num_items - 1) ? (selection < 1 ? 0 : (selection - 1)) : (selection - 2)); i < menu->num_items; i++)
     {
-        for (int i = 0; i < 3; i++) 
+        u8g2_SetDrawColor(&u8g2, 0);
+        u8g2_DrawXBM(&u8g2, 1, 12 + y_offset, menu_item_width, menu_item_height, selection == i ? menu_item_highlighted : menu_item);
+
+        if (menu->items[i].menuIcon != NULL)
         {
-            u8g2_SetDrawColor(&u8g2, 0);
-            u8g2_DrawXBM(&u8g2, 1, 12 + y_offset, menu_item_width, menu_item_height, selection == i ? menu_item_highlighted : menu_item);
-
-            if (menu->items[i].menuIcon != NULL)
-            {
-                u8g2_SetDrawColor(&u8g2, selection == i ? 1 : 0);
-                u8g2_DrawXBM(&u8g2, 5, 14 + y_offset, menu_icon_width, menu_icon_height, menu->items[i].menuIcon);
-            }
-
-            u8g2_SetDrawColor(&u8g2, selection == i ? 0 : 1);
-            u8g2_SetFont(&u8g2, u8g2_font_6x10_tr);
-            u8g2_DrawStr(&u8g2, 20, 23 + y_offset, menu->items[i].label);
-            u8g2_SetDrawColor(&u8g2,0);
-            y_offset += 18;
+            u8g2_SetDrawColor(&u8g2, selection == i ? 1 : 0);
+            u8g2_DrawXBM(&u8g2, 5, 14 + y_offset, menu_icon_width, menu_icon_height, menu->items[i].menuIcon);
         }
-    }
-    else 
-    {
-        for (int i = 0 + (selection - 2); i < menu->num_items; i++) 
-        {
-            u8g2_SetDrawColor(&u8g2, 0);
-            u8g2_DrawXBM(&u8g2, 1, 12 + y_offset, menu_item_width, menu_item_height, selection == i ? menu_item_highlighted : menu_item);
 
-            if (menu->items[i].menuIcon != NULL)
-            {
-                u8g2_SetDrawColor(&u8g2, selection == i ? 1 : 0);
-                u8g2_DrawXBM(&u8g2, 5, 14 + y_offset, menu_icon_width, menu_icon_height, menu->items[i].menuIcon);
-            }
-
-            u8g2_SetDrawColor(&u8g2, selection == i ? 0 : 1);
-            u8g2_SetFont(&u8g2, u8g2_font_6x10_tr);
-            u8g2_DrawStr(&u8g2, 20, 23 + y_offset, menu->items[i].label);
-            u8g2_SetDrawColor(&u8g2,0);
-            y_offset += 18;
-        }
+        u8g2_SetDrawColor(&u8g2, selection == i ? 0 : 1);
+        u8g2_SetFont(&u8g2, u8g2_font_6x10_tr);
+        u8g2_DrawStr(&u8g2, 20, 23 + y_offset, menu->items[i].label);
+        u8g2_SetDrawColor(&u8g2,0);
+        y_offset += 18;
     }
-       
 }
 
 uint8_t handleInput(const Menu* menu)
