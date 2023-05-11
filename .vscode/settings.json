@@ -8,6 +8,7 @@
         "l_screen.h": "c",
         "typeinfo": "c",
         "m_back.h": "c",
-        "window.h": "c"
+        "window.h": "c",
+        "display_controller.h": "c"
     }
 }

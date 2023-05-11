@@ -6,6 +6,9 @@
 #include <u8g2.h>
 #include <stdio.h>
 
+// APPS
+#include "applications/apps.h"
+
 // Defines
 #define screen_width 128
 #define screen_height 64

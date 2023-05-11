@@ -11,7 +11,7 @@ uint8_t m_sel = 0;
 extern uint8_t u8x8_stm32_gpio_and_delay(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int, void *arg_ptr);
 extern uint8_t u8x8_byte_stm32_hw_i2c(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int, void *arg_ptr);
 
-typedef void (*MenuAction)();
+typedef void (*MenuAction)(u8g2_t u8g2);
 
 typedef struct {
     const char* label;
@@ -35,8 +35,8 @@ MenuItem menuItems[] = {
     {"Option 1", NULL, NULL},
     {"Option 2", NULL, NULL},
     {"System Settings", settings_icon, goto_settings},
-    {"Option 4", NULL, NULL},
-    {"Option 5", NULL, NULL}
+    {"Option 4", NULL, datetime_app},
+    {"Option 5", NULL, test_app}
 };
 
 Menu mainMenu = {
@@ -145,7 +145,7 @@ uint8_t handleInput(const Menu* menu)
     {
         if (menu->items[m_sel].action != NULL)
         {
-            menu->items[m_sel].action();
+            menu->items[m_sel].action(u8g2);
         }
     }
 

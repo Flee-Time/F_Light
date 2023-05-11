@@ -10,9 +10,8 @@ static void MX_GPIO_Init(void);
 static void MX_I2C1_Init(void);
 static void MX_SPI1_Init(void);
 static void MX_RTC_Init(void);
-void reset_datetime(void);
 
-char showtime[7];
+char showtime[8];
 RTC_TimeTypeDef sTime = {0};
 RTC_DateTypeDef sDate = {0};
 
@@ -41,31 +40,6 @@ int main(void)
 
     drawScreen(showtime, 3);
   }
-}
-
-void reset_datetime()
-{
-  sTime.Hours = 0x0;
-  sTime.Minutes = 0x0;
-  sTime.Seconds = 0x0;
-  sTime.DayLightSaving = RTC_DAYLIGHTSAVING_NONE;
-  sTime.StoreOperation = RTC_STOREOPERATION_RESET;
-  if (HAL_RTC_SetTime(&hrtc, &sTime, RTC_FORMAT_BCD) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  HAL_RTC_WaitForSynchro(&hrtc);
-
-  sDate.WeekDay = RTC_WEEKDAY_TUESDAY;
-  sDate.Month = RTC_MONTH_MAY;
-  sDate.Date = 0x0;
-  sDate.Year = 0x0;
-
-  if (HAL_RTC_SetDate(&hrtc, &sDate, RTC_FORMAT_BCD) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  HAL_RTC_WaitForSynchro(&hrtc);
 }
 
 /**
