@@ -84,8 +84,8 @@ void loadingScreen()
 
 void drawScreen(char time[7], uint8_t battery_level)
 {
-    Menu *currentMenu = (selected_menu ? &settingsMenu : &mainMenu);
-
+    // Think of a better submenu system, one which has context of which menu was the previous one
+    Menu *menu[] = {&mainMenu, &settingsMenu};
 	u8g2_ClearBuffer(&u8g2);
     
 	u8g2_SetDrawColor(&u8g2,0);
@@ -95,8 +95,8 @@ void drawScreen(char time[7], uint8_t battery_level)
     u8g2_SetFont(&u8g2, u8g2_font_4x6_mf);
     u8g2_DrawStr(&u8g2, 1, 7, time);
 
-    uint8_t selection = handleInput(currentMenu);
-    displayMenu(currentMenu, selection);
+    uint8_t selection = handleInput(menu[selected_menu]);
+    displayMenu(menu[selected_menu], selection);
 
     u8g2_SendBuffer(&u8g2);
 }
@@ -149,22 +149,22 @@ uint8_t handleInput(const Menu* menu)
         }
     }
 
+    if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_8) && selected_menu > 0)
+    {
+        selected_menu--;
+    }
+
     return m_sel;
 }
-
-// TODO : When switching theres a tiny delay that doesnt seem great in the oled display, try to minimize the issue or fix it
-// TODO : Make the apps modular by making an applications folder.
 
 void goto_settings()
 {
     selected_menu = 1;
-    HAL_Delay(150);
     m_sel = 0;
 }
 
 void goto_mainmenu()
 {
     selected_menu = 0;
-    HAL_Delay(150);
     m_sel = 0;
 }
