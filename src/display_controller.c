@@ -1,7 +1,6 @@
 #include "display_controller.h"
 #include "static/loading_screen/l_screen.h"
 #include "static/main_menu/m_back.h"
-#include "static/window/window.h"
 
 static u8g2_t u8g2;
 uint8_t *buf;
@@ -74,9 +73,8 @@ void loadingScreen()
     for (int i = 0; i < 85; i++)
     {
 	    u8g2_ClearBuffer(&u8g2);
-	    u8g2_SetDrawColor(&u8g2,0);
+	    u8g2_SetDrawColor(&u8g2,1);
         u8g2_DrawXBM(&u8g2, 0, 0, screen_width, screen_height, l_screen);
-        u8g2_SetDrawColor(&u8g2,1);
         u8g2_DrawBox(&u8g2, 22, 52, i, 6);
         u8g2_SendBuffer(&u8g2);
     }
@@ -86,12 +84,13 @@ void drawScreen(char time[7], uint8_t battery_level)
 {
     // Think of a better submenu system, one which has context of which menu was the previous one
     Menu *menu[] = {&mainMenu, &settingsMenu};
-	u8g2_ClearBuffer(&u8g2);
     
-	u8g2_SetDrawColor(&u8g2,0);
+	u8g2_ClearBuffer(&u8g2);
+
+    u8g2_SetBitmapMode(&u8g2, 1);
+	u8g2_SetDrawColor(&u8g2,1);
     u8g2_DrawXBM(&u8g2, 0, 0, screen_width, screen_height, m_back);
     u8g2_DrawXBM(&u8g2, 45, 1, bicon_width, bicon_height, battery[battery_level]);
-    u8g2_SetDrawColor(&u8g2,1);
     u8g2_SetFont(&u8g2, u8g2_font_4x6_mf);
     u8g2_DrawStr(&u8g2, 1, 7, time);
 
@@ -111,12 +110,12 @@ void displayMenu(const Menu* menu, uint8_t selection) {
 
     for (int i = (selection < (menu->num_items - 1) ? (selection < 1 ? 0 : (selection - 1)) : (selection - 2)); i < menu->num_items; i++)
     {
-        u8g2_SetDrawColor(&u8g2, 0);
+        u8g2_SetDrawColor(&u8g2, 1);
         u8g2_DrawXBM(&u8g2, 1, 12 + y_offset, menu_item_width, menu_item_height, selection == i ? menu_item_highlighted : menu_item);
 
         if (menu->items[i].menuIcon != NULL)
         {
-            u8g2_SetDrawColor(&u8g2, selection == i ? 1 : 0);
+            u8g2_SetDrawColor(&u8g2, selection == i ? 0 : 1);
             u8g2_DrawXBM(&u8g2, 5, 14 + y_offset, menu_icon_width, menu_icon_height, menu->items[i].menuIcon);
         }
 
