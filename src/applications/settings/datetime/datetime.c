@@ -4,7 +4,9 @@
 extern RTC_HandleTypeDef hrtc;
 
 static RTC_TimeTypeDef appTime = {0};
+static RTC_TimeTypeDef setTime = {0};
 static RTC_DateTypeDef appDate = {0};
+static RTC_DateTypeDef setDate = {0};
 char time[4];
 uint8_t offset = 19;
 
@@ -14,21 +16,49 @@ void datetime_app(u8g2_t u8g2)
 {
     uint8_t selected_time_frame = 0;
 
-    HAL_RTC_GetTime(&hrtc, &appTime, RTC_FORMAT_BIN);
-    HAL_RTC_GetDate(&hrtc, &appDate, RTC_FORMAT_BIN);
-
-    uint8_t preview_time[] = {
-        (appTime.Hours / 10) % 10,
-        appTime.Hours % 10,
-        (appTime.Minutes / 10) % 10,
-        appTime.Minutes % 10
-    };
+    HAL_RTC_GetTime(&hrtc, &setTime, RTC_FORMAT_BIN);
+    HAL_RTC_GetDate(&hrtc, &setDate, RTC_FORMAT_BIN);
 
     while (!HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_8))
     {
+        uint8_t preview_time[] = {
+            (setTime.Hours / 10) % 10,
+            setTime.Hours % 10,
+            (setTime.Minutes / 10) % 10,
+            setTime.Minutes % 10
+        };
+
         if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_12))
         {
             // NAVIGATION UP
+            switch (selected_time_frame)
+            {
+            case 0:
+                if (setTime.Hours < 20)
+                {
+                    setTime.Hours += 10;
+                }
+                break;
+            case 1:
+                if (setTime.Hours < 23)
+                {
+                    setTime.Hours++;
+                }
+                break;
+            case 2:
+                if (setTime.Minutes < 50)
+                {
+                    setTime.Minutes += 10;
+                }
+                break;
+            case 3:
+                if (setTime.Minutes < 59)
+                {
+                    setTime.Minutes++;
+                }
+                break;
+            }
+            HAL_Delay(150);
         }
         else if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_13))
         {
@@ -42,6 +72,34 @@ void datetime_app(u8g2_t u8g2)
         else if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_14))
         {
             // NAVIGATION DOWN
+            switch (selected_time_frame)
+            {
+            case 0:
+                if (setTime.Hours > 00)
+                {
+                    setTime.Hours -= 10;
+                }
+                break;
+            case 1:
+                if (setTime.Hours > 00)
+                {
+                    setTime.Hours--;
+                }
+                break;
+            case 2:
+                if (setTime.Minutes > 9)
+                {
+                    setTime.Minutes -= 10;
+                }
+                break;
+            case 3:
+                if (setTime.Minutes > 0)
+                {
+                    setTime.Minutes--;
+                }
+                break;
+            }
+            HAL_Delay(150);
         }
         else if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_15))
         {
@@ -87,6 +145,8 @@ void datetime_app(u8g2_t u8g2)
             if (i == selected_time_frame)
             {
                 u8g2_DrawXBM(&u8g2, 22 + offset, 15, time_frame_width, time_frame_height, time_frame_highlighted);
+                u8g2_DrawXBM(&u8g2, 29 + offset, 10, cursor_width, cursor_height, cursor_up);
+                u8g2_DrawXBM(&u8g2, 29 + offset, 45, cursor_width, cursor_height, cursor_down);
                 u8g2_SetDrawColor(&u8g2, 0);
                 char time_value = { preview_time[i] + '0', '\0' };
                 u8g2_DrawStr(&u8g2, 27 + offset, 34, &time_value);
