@@ -7,6 +7,9 @@ uint8_t *buf;
 uint8_t selected_menu = 0;
 uint8_t m_sel = 0;
 
+static uint32_t up_lastGetTick = 0;
+static uint32_t down_lastGetTick = 0;
+
 extern uint8_t u8x8_stm32_gpio_and_delay(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int, void *arg_ptr);
 extern uint8_t u8x8_byte_stm32_hw_i2c(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int, void *arg_ptr);
 
@@ -131,13 +134,19 @@ uint8_t handleInput(const Menu* menu)
 {
     if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_14) && m_sel < (menu->num_items - 1))
     {
-      m_sel++;
-      HAL_Delay(150);
+        if((HAL_GetTick() - up_lastGetTick) >= 200)
+        {
+            m_sel++;
+            up_lastGetTick = HAL_GetTick();
+        }
     }
     else if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_12) && m_sel > 0)
     {
-      m_sel--;
-      HAL_Delay(150);
+        if((HAL_GetTick() - down_lastGetTick) >= 200)
+        {
+            m_sel--;
+            down_lastGetTick = HAL_GetTick();
+        }
     }
 
     if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9))
