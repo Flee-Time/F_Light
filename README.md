@@ -163,7 +163,7 @@ PA4 --> NCS
 
 Some schematics for the prototype device im using right now, keep in mind nothing is final at this stage.
 
-Please click **[here](https://github.com/Flee-Time/F_Light/blob/master/documentation/prototype_schematic.pdf**)** for the schematics.
+Please click **[here](https://github.com/Flee-Time/F_Light/blob/master/documentation/prototype_schematic.pdf)** for the schematics.
 
 ## Prototype Device Images
 
