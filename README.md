@@ -115,7 +115,7 @@ This is the bare minimum you have to do to get the project running on bare metal
 <!-- USAGE EXAMPLES -->
 ## Pinouts and Connection Diagrams
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+This project utilizes a combination of hardware components to create a versatile handheld radio device.
 
 * Hardware used in this project
 ```
@@ -126,6 +126,7 @@ CC1101 433MHz module
 6 Buttons
 ```
 
+To properly connect the various components of the handheld device, the following pin connections should be made:
 
 * Buttons
 ```
