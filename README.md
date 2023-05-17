@@ -163,16 +163,16 @@ PA4 --> NCS
 
 Some schematics for the prototype device im using right now, keep in mind nothing is final at this stage.
 
-<object data="documentation/prototype_schematic.pdf" type="application/pdf" width="600px" height="400px">
-    <embed src="documentation/prototype_schematic.pdf">
-        <p>This browser does not support PDFs. Please download the PDF to view it: <a href="https://github.com/Flee-Time/F_Light/documentation/prototype_schematic.pdf">Download PDF</a>.</p>
+<object data="https://github.com/Flee-Time/F_Light/blob/master/documentation/prototype_schematic.pdf" type="application/pdf" width="600px" height="400px">
+    <embed src="https://github.com/Flee-Time/F_Light/blob/master/documentation/prototype_schematic.pdf">
+        <p>This browser does not support PDFs. Please download the PDF to view it: <a href="https://github.com/Flee-Time/F_Light/blob/master/documentation/prototype_schematic.pdf">Download PDF</a>.</p>
     </embed>
 </object>
 
 
 ## Prototype Device Images
 
-_For pictures of the device, please refer to [here](https://github.com/Flee-Time/F_Light/documentation/device_pictures/PICS.md)_
+_For pictures of the device, please refer to [here](https://github.com/Flee-Time/F_Light/blob/master/documentation/device_pictures/PICS.md)_
 
 <!-- ROADMAP -->
 ## Roadmap
