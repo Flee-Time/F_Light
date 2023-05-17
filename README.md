@@ -163,16 +163,11 @@ PA4 --> NCS
 
 Some schematics for the prototype device im using right now, keep in mind nothing is final at this stage.
 
-<object data="https://github.com/Flee-Time/F_Light/blob/master/documentation/prototype_schematic.pdf" type="application/pdf" width="600px" height="400px">
-    <embed src="https://github.com/Flee-Time/F_Light/blob/master/documentation/prototype_schematic.pdf">
-        <p>This browser does not support PDFs. Please download the PDF to view it: <a href="https://github.com/Flee-Time/F_Light/blob/master/documentation/prototype_schematic.pdf">Download PDF</a>.</p>
-    </embed>
-</object>
-
+Please click **[here](https://github.com/Flee-Time/F_Light/blob/master/documentation/prototype_schematic.pdf**)** for the schematics.
 
 ## Prototype Device Images
 
-_For pictures of the device, please refer to [here](https://github.com/Flee-Time/F_Light/blob/master/documentation/device_pictures/PICS.md)_
+_For pictures of the device, please refer to **[here](https://github.com/Flee-Time/F_Light/blob/master/documentation/device_pictures/PICS.md)**_
 
 <!-- ROADMAP -->
 ## Roadmap
@@ -190,7 +185,7 @@ _For pictures of the device, please refer to [here](https://github.com/Flee-Time
 - [ ] Write own hardware abstraction layer for optimization
 - [ ] Make Prototype pcb with integrated components.
 
-See the [open issues](https://github.com/Flee-Time/F_Light/issues) for a full list of proposed features (and known issues).
+See the **[open issues](https://github.com/Flee-Time/F_Light/issues)** for a full list of proposed features (and known issues).
 
 
 <!-- CONTRIBUTING -->
@@ -210,22 +205,22 @@ If you have a suggestion that would make this better, please fork the repo and c
 <!-- LICENSE -->
 ## License
 
-This project is licensed under the GPL-3.0 License. Feel free to use, modify, and distribute the code according to the terms of the license. See [LICENSE](https://github.com/Flee-Time/F_Light/blob/master/LICENSE) for more information.
+This project is licensed under the GPL-3.0 License. Feel free to use, modify, and distribute the code according to the terms of the license. See **[LICENSE](https://github.com/Flee-Time/F_Light/blob/master/LICENSE)** for more information.
 
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
 I would like to express our gratitude to the open-source community for their invaluable contributions and support, which have played a significant role in the development of this project. Thank you to all the individuals and organizations who have shared their knowledge and expertise in the field of radio communication.
 
-* [Flipper Zero](https://flipperzero.one/)
-* [u8g2 Library](https://github.com/olikraus/u8g2)
-* [Best Readme Template](https://github.com/othneildrew/Best-README-Template/)
+* **[Flipper Zero](https://flipperzero.one/)**
+* **[u8g2 Library](https://github.com/olikraus/u8g2)**
+* **[Best Readme Template](https://github.com/othneildrew/Best-README-Template/)**
 
 ## Donations
 
 If you find this project helpful and would like to support its development and maintenance, you can make a donation to show your appreciation. Your contribution will help ensure the project continues to grow and improve. Thank you for your generosity! 
 
-* Donate via [Ko-fi](https://ko-fi.com/fleetime)
+* Donate via **[Ko-fi](https://ko-fi.com/fleetime)**
 
 Your support is highly appreciated and will be acknowledged in the project's documentation.
 
