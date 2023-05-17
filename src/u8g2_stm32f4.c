@@ -5,7 +5,6 @@
 #define DEVICE_ADDRESS 	0x3C
 #define TX_TIMEOUT		100
 
-extern SPI_HandleTypeDef hspi2;
 extern I2C_HandleTypeDef hi2c1;
 
 uint8_t u8x8_stm32_gpio_and_delay(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int, void *arg_ptr)
