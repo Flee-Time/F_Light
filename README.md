@@ -117,6 +117,16 @@ This is the bare minimum you have to do to get the project running on bare metal
 
 Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
 
+* Hardware used in this project
+```
+STLink clone
+STM32F411CEU6 BLACK PILL / WeAct Black Pill V2.0
+Fake SSD1306 1.3" OLED Display (Has a sh1106 controller inside)
+CC1101 433MHz module
+6 Buttons
+```
+
+
 * Buttons
 ```
 3v3  --> all_buttons
