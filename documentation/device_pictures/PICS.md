@@ -12,7 +12,7 @@
   <p style="font-size: 25px;">Keep in mind this is a prototype device, the final one will have a custom pcb made.</p>
 </div>
 
-<div style="text-align: center;">
+<div align="center">
     <b style="font-size: 20px;">Picture of the device</b> <br />
     <img src="device1.jpg" width="400"> <br />
     <b style="font-size: 20px;">Side picture of the device</b> <br />
