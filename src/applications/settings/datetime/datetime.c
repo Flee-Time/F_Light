@@ -82,7 +82,7 @@ void datetime_app(u8g2_t u8g2)
             // NAVIGATION RIGHT
             if((HAL_GetTick() - right_lastGetTick) >= 200)
             {
-                if (selected_time_frame < 3)
+                if (selected_time_frame < 6)
                 {
                     selected_time_frame++;
                 }
@@ -140,16 +140,10 @@ void datetime_app(u8g2_t u8g2)
 
         u8g2_ClearBuffer(&u8g2);
 
-        get_time(time);
-
-        u8g2_SetDrawColor(&u8g2,1);
-        u8g2_SetFont(&u8g2, u8g2_font_6x12_tr);
-        u8g2_DrawStr(&u8g2, 39, 8, time);
-
-        u8g2_SetFont(&u8g2, u8g2_font_9x18_tr);
-        u8g2_DrawStr(&u8g2, 58, 33, ":");
-        u8g2_SetFont(&u8g2, u8g2_font_9x18B_tr);
-
+        u8g2_DrawLine(&u8g2, 0, 54, 128, 54);
+        u8g2_SetFont(&u8g2, u8g2_font_6x10_tr);
+        u8g2_DrawStr(&u8g2, 2, 63, "Cancel");
+        u8g2_DrawStr(&u8g2, 84, 63, "Confirm");
 
         uint8_t a_offset;
         if((HAL_GetTick() - anim_lastGetTick) >= 250)
@@ -162,44 +156,73 @@ void datetime_app(u8g2_t u8g2)
         {
             a_offset = 0;
         }
-        
-        u8g2_DrawXBM(&u8g2, 115 + a_offset, 25, arrow_width, arrow_height, right_arrow);
 
-        for (uint8_t i = 0; i < 4; i++)
+        if (selected_time_frame < 4)
         {
-            // ik i could have done offset = 20 * i, but it didnt work when having a space in the middle, dont judge me this seemed easier and its staying that way
-            switch (i)
+            u8g2_DrawXBM(&u8g2, 115 + a_offset, 25, arrow_width, arrow_height, right_arrow);
+
+            get_time(time);
+
+            u8g2_SetDrawColor(&u8g2,1);
+            u8g2_SetFont(&u8g2, u8g2_font_6x12_tr);
+            u8g2_DrawStr(&u8g2, 76, 8, time);
+
+            u8g2_SetFont(&u8g2, u8g2_font_9x18_tr);
+            u8g2_DrawStr(&u8g2, 58, 33, ":");
+
+            u8g2_SetFont(&u8g2, u8g2_font_6x10_tr);
+            u8g2_DrawStr(&u8g2, 2, 8, "Set Time");
+
+            for (uint8_t i = 0; i < 4; i++)
             {
-                case 0:
-                    offset = 0;
-                    break;
-                case 1:
-                    offset = 20;
-                    break;
-                case 2:
-                    offset = 44;
-                    break;
-                case 3:
-                    offset = 64;
-                    break;
+                // ik i could have done offset = 20 * i, but it didnt work when having a space in the middle, dont judge me this seemed easier and its staying that way
+                switch (i)
+                {
+                    case 0:
+                        offset = 0;
+                        break;
+                    case 1:
+                        offset = 20;
+                        break;
+                    case 2:
+                        offset = 44;
+                        break;
+                    case 3:
+                        offset = 64;
+                        break;
+                }
+
+                u8g2_SetFont(&u8g2, u8g2_font_9x18B_tr);
+
+                if (i == selected_time_frame)
+                {
+                    u8g2_DrawXBM(&u8g2, 22 + offset, 15, time_frame_width, time_frame_height, time_frame_highlighted);
+                    u8g2_DrawXBM(&u8g2, 28 + offset, 10, cursor_width, cursor_height, cursor_up);
+                    u8g2_DrawXBM(&u8g2, 28 + offset, 45, cursor_width, cursor_height, cursor_down);
+                    u8g2_SetDrawColor(&u8g2, 0);
+                    char time_value[2] = { preview_time[i] + '0', '\0' };
+                    u8g2_DrawStr(&u8g2, 27 + offset, 34, &time_value);
+                    u8g2_SetDrawColor(&u8g2, 1);
+                }
+                else
+                {
+                    u8g2_DrawXBM(&u8g2, 22 + offset , 15, time_frame_width, time_frame_height, &time_frame);
+                    char time_value[2] = { preview_time[i] + '0', '\0' };
+                    u8g2_DrawStr(&u8g2, 27 + offset, 34, &time_value);
+                }            
             }
-            
-            if (i == selected_time_frame)
+        }
+        else
+        {
+            u8g2_DrawXBM(&u8g2, 5 - a_offset, 25, arrow_width, arrow_height, left_arrow);
+
+            u8g2_SetFont(&u8g2, u8g2_font_6x10_tr);
+            u8g2_DrawStr(&u8g2, 2, 8, "Set Date");
+
+            for (uint8_t i = 0; i < 2; i++)
             {
-                u8g2_DrawXBM(&u8g2, 22 + offset, 15, time_frame_width, time_frame_height, time_frame_highlighted);
-                u8g2_DrawXBM(&u8g2, 28 + offset, 10, cursor_width, cursor_height, cursor_up);
-                u8g2_DrawXBM(&u8g2, 28 + offset, 45, cursor_width, cursor_height, cursor_down);
-                u8g2_SetDrawColor(&u8g2, 0);
-                char time_value[2] = { preview_time[i] + '0', '\0' };
-                u8g2_DrawStr(&u8g2, 27 + offset, 34, &time_value);
-                u8g2_SetDrawColor(&u8g2, 1);
+                // TODO : ADD DATE SELECTION AND SETTING, im way to tired to code this, if i try to code rn i would just do many many if statements, gonna go rest.
             }
-            else
-            {
-                u8g2_DrawXBM(&u8g2, 22 + offset , 15, time_frame_width, time_frame_height, &time_frame);
-                char time_value[2] = { preview_time[i] + '0', '\0' };
-                u8g2_DrawStr(&u8g2, 27 + offset, 34, &time_value);
-            }            
         }
 
         if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9))
