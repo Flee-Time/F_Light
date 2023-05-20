@@ -9,9 +9,13 @@ uint8_t m_sel = 0;
 
 static uint32_t up_lastGetTick = 0;
 static uint32_t down_lastGetTick = 0;
+static uint32_t confirm_lastGetTick = 0;
+static uint32_t back_lastGetTick = 0;
 
 extern uint8_t u8x8_stm32_gpio_and_delay(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int, void *arg_ptr);
 extern uint8_t u8x8_byte_stm32_hw_i2c(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int, void *arg_ptr);
+
+// TODO : Fix bug when coming out of apps the menu goes one back.
 
 typedef void (*MenuAction)(u8g2_t u8g2);
 
@@ -37,7 +41,7 @@ MenuItem menuItems[] = {
     {"Option 1", NULL, NULL},
     {"Option 2", NULL, NULL},
     {"System Settings", settings_icon, goto_settings},
-    {"Option 4", NULL, datetime_app},
+    {"Option 4", NULL, NULL},
     {"Option 5", NULL, test_app}
 };
 
@@ -49,8 +53,7 @@ Menu mainMenu = {
 
 // Settings Submenu
 MenuItem settingsItems[] = {
-    {"Reset DATE&TIME", settings_icon, NULL},
-    {"Set DATE&TIME", settings_icon, NULL},
+    {"Set DATE&TIME", clock_icon, datetime_app},
     {"Exit", NULL, goto_mainmenu},
     {"Test 1", NULL, NULL},
     {"Test 2", NULL, NULL}
@@ -153,13 +156,21 @@ uint8_t handleInput(const Menu* menu)
     {
         if (menu->items[m_sel].action != NULL)
         {
-            menu->items[m_sel].action(u8g2);
+            if((HAL_GetTick() - confirm_lastGetTick) >= 200)
+            {
+                menu->items[m_sel].action(u8g2);
+                confirm_lastGetTick = HAL_GetTick();
+            }
         }
     }
 
     if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_8) && selected_menu > 0)
     {
-        selected_menu--;
+        if((HAL_GetTick() - back_lastGetTick) >= 200)
+        {
+            selected_menu--;
+            back_lastGetTick = HAL_GetTick();
+        }
     }
 
     return m_sel;

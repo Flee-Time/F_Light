@@ -7,10 +7,10 @@ static RTC_TimeTypeDef appTime = {0};
 static RTC_TimeTypeDef setTime = {0};
 static RTC_DateTypeDef appDate = {0};
 static RTC_DateTypeDef setDate = {0};
-char time[12];
-char date[12];
-uint8_t offset = 0;
-uint8_t a_offset = 0;
+static char time[12];
+static char date[12];
+static uint8_t offset = 0;
+static uint8_t a_offset = 0;
 
 static uint32_t left_lastGetTick = 0;
 static uint32_t right_lastGetTick = 0;
@@ -19,6 +19,7 @@ static uint32_t down_lastGetTick = 0;
 
 static uint32_t anim_lastGetTick = 0;
 static uint32_t init_lastGetTick = 0;
+static uint32_t conf_lastGetTick = 0;
 
 void get_date_time(char* date_str, char* time_str);
 void set_time(RTC_TimeTypeDef time);
@@ -26,13 +27,14 @@ void set_date(RTC_DateTypeDef date);
 void reset_time(void);
 void reset_date(void);
 
-// TODO : Add a confirmation text so people dont get confused if the time or date got set.
-
 void datetime_app(u8g2_t u8g2)
 {
-    uint8_t selected_time_frame = 0;
-    uint8_t initialized = 0;
+    static uint8_t selected_time_frame = 0;
+    static uint8_t initialized = 0;
+    static uint8_t date_set = 0;
+    static uint8_t time_set = 0;
     init_lastGetTick = HAL_GetTick();
+    conf_lastGetTick = HAL_GetTick();
 
     HAL_RTC_GetTime(&hrtc, &setTime, RTC_FORMAT_BIN);
     HAL_RTC_GetDate(&hrtc, &setDate, RTC_FORMAT_BIN);
@@ -232,10 +234,23 @@ void datetime_app(u8g2_t u8g2)
                 }            
             }
 
-            if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9) && initialized == 1)
+            if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9) && initialized)
             {
                 reset_time();
                 set_time(setTime);
+                time_set = 1;
+            }
+
+            if((HAL_GetTick() - conf_lastGetTick) >= 2000 && time_set == 1)
+            {
+                time_set = 0;
+                conf_lastGetTick = HAL_GetTick();
+            }
+
+            if (time_set)
+            {
+                u8g2_SetFont(&u8g2, u8g2_font_5x8_tr);
+                u8g2_DrawStr(&u8g2, 40, 63, "Time set");
             }
         }
         else
@@ -361,10 +376,23 @@ void datetime_app(u8g2_t u8g2)
                 }
             }
 
-            if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9) && initialized == 1)
+            if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9) && initialized)
             {
                 reset_date();
                 set_date(setDate);
+                date_set = 1;
+            }
+
+            if((HAL_GetTick() - conf_lastGetTick) >= 2000 && date_set == 1)
+            {
+                date_set = 0;
+                conf_lastGetTick = HAL_GetTick();
+            }
+
+            if (date_set)
+            {
+                u8g2_SetFont(&u8g2, u8g2_font_5x7_tr);
+                u8g2_DrawStr(&u8g2, 40, 63, "Date set");
             }
         }
 

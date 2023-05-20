@@ -187,7 +187,7 @@ _For pictures of the device, please refer to **[here](https://github.com/Flee-Ti
 - [x] Add documentation
 - [ ] Improve code readability
 - [ ] Improve UI & UX
-    - [ ] Finish Time & Date setttings app
+    - [x] Finish Time & Date setttings app
     - [ ] Make Menu's more modular
 - [ ] Add RF implementation
 - [ ] Add SD card and filesystem support for saving recorded frequencies
