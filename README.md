@@ -71,7 +71,11 @@ F_Light stands for Free Light.
 
 * At its current stage of development, the project focuses primarily on the implementation of the menu system, which provides a user-friendly interface for accessing the device's functionalities. The RF section, responsible for the actual radio communication, is yet to be implemented.
 
+<<<<<<< HEAD
 * Parts have arrived, we are back on track. I made some progress with the SPI communication with the cc1101 module but its still not reliable. Unfortunately next week i have my finals so i wont be developing for about a week.
+=======
+* The rtl-sdr has arrived, but turns out the cc1101 module i have is fried, i have ordered a replacement, until that arrives the development on the rf side of things are sadly halted.
+>>>>>>> 49a1294dd47dcbb3bc3fb8cc9c1e5a25e786037b
 
 
 ## Key Features
