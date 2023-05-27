@@ -71,7 +71,7 @@ F_Light stands for Free Light.
 
 * At its current stage of development, the project focuses primarily on the implementation of the menu system, which provides a user-friendly interface for accessing the device's functionalities. The RF section, responsible for the actual radio communication, is yet to be implemented.
 
-* Currently im waiting for the rtl-sdr i ordered to arrive so i can start developing drivers for the cc1101 module, i need to see the radio spectrum so i don't accidentally jamm/interfere with any signals while coding.
+* Parts have arrived, we are back on track. I made some progress with the SPI communication with the cc1101 module but its still not reliable. Unfortunately next week i have my finals so i wont be developing for about a week.
 
 
 ## Key Features
@@ -192,6 +192,12 @@ _For pictures of the device, please refer to **[here](https://github.com/Flee-Ti
     - [x] Finish Time & Date setttings app
     - [ ] Make Menu's more modular
 - [ ] Add RF implementation
+    - [x] Add SPI functionality
+    - [ ] Improve SPI functionality
+    - [ ] Write code to initialize the CC1101 module
+    - [ ] Basic RF receiving functionality
+    - [ ] Basic RF transmit functionality
+    - [ ] Basic RF save functionality
 - [ ] Add SD card and filesystem support for saving recorded frequencies
 - [ ] Switch to an RTOS
 - [ ] Rewrite everything using a more OOP approach
