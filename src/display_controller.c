@@ -38,7 +38,7 @@ void goto_mainmenu(void);
 
 // Main Menu
 MenuItem menuItems[] = {
-    {"Option 1", NULL, subghz_test},
+    {"Subghz Test", NULL, subghz_test},
     {"Option 2", NULL, NULL},
     {"System Settings", settings_icon, goto_settings},
     {"Option 4", NULL, NULL},

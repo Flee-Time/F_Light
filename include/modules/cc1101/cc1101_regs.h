@@ -177,8 +177,7 @@ typedef enum {
     CC1101StateFSTXON = 0b011, /** Fast TX ready */
     CC1101StateCALIBRATE = 0b100, /** Frequency synthesizer calibration is running */
     CC1101StateSETTLING = 0b101, /** PLL is settling */
-    CC1101StateRXFIFO_OVERFLOW =
-        0b110, /** RX FIFO has overflowed. Read out any useful data, then flush the FIFO with SFRX */
+    CC1101StateRXFIFO_OVERFLOW = 0b110, /** RX FIFO has overflowed. Read out any useful data, then flush the FIFO with SFRX */
     CC1101StateTXFIFO_UNDERFLOW = 0b111, /** TX FIFO has underflowed. Acknowledge with SFTX */
 } CC1101State;
 

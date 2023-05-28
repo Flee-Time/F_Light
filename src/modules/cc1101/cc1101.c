@@ -6,8 +6,6 @@
 /*
  *
  * These codes were taken and adapted from the flipper zero cc1101 driver.
- * 
- * Looks like MISO is always high when the chip is in idle.
  *
 */
 
@@ -15,7 +13,7 @@ CC1101Status cc1101_strobe(SPI_HandleTypeDef handle, uint8_t strobe) {
     uint8_t tx[1] = {strobe};
     CC1101Status rx[1] = {0};
 
-    while(!HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_6))
+    while(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_6))
         ;
     spi_trx(handle, tx, (uint8_t*)rx, 1, CC1101_TIMEOUT);
 
@@ -27,7 +25,7 @@ CC1101Status cc1101_write_reg(SPI_HandleTypeDef handle, uint8_t reg, uint8_t dat
     uint8_t tx[2] = {reg, data};
     CC1101Status rx[2] = {0};
 
-    while(!HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_6))
+    while(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_6))
         ;
     spi_trx(handle, tx, (uint8_t*)rx, 2, CC1101_TIMEOUT);
 
@@ -40,7 +38,7 @@ CC1101Status cc1101_read_reg(SPI_HandleTypeDef handle, uint8_t reg, uint8_t* dat
     uint8_t tx[2] = {reg | CC1101_READ, 0};
     CC1101Status rx[2] = {0};
 
-    while(!HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_6))
+    while(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_6))
         ;
     spi_trx(handle, tx, (uint8_t*)rx, 2, CC1101_TIMEOUT);
 
@@ -81,7 +79,7 @@ void cc1101_set_pa_table(SPI_HandleTypeDef handle, const uint8_t value[8]) {
 
     memcpy(&tx[1], &value[0], 8);
 
-    while(!HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_6))
+    while(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_6))
         ;
     spi_trx(handle, tx, (uint8_t*)rx, sizeof(rx), CC1101_TIMEOUT);
 
@@ -96,7 +94,7 @@ uint8_t cc1101_write_fifo(SPI_HandleTypeDef handle, const uint8_t* data, uint8_t
 
     // Start transaction
     // Wait IC to become ready
-    while(!HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_6))
+    while(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_6))
         ;
     // Tell IC what we want
     spi_trx(handle, buff_tx, (uint8_t*)buff_rx, size + 1, CC1101_TIMEOUT);
@@ -110,7 +108,7 @@ uint8_t cc1101_read_fifo(SPI_HandleTypeDef handle, uint8_t* data, uint8_t* size)
 
     // Start transaction
     // Wait IC to become ready
-    while(!HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_6))
+    while(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_6))
         ;
 
     // First byte - packet length
