@@ -6,6 +6,7 @@
 /*
  *
  * These codes were taken and adapted from the flipper zero cc1101 driver.
+ * Todo : Add code to initialize the cc1101 chip.
  *
 */
 

@@ -7,13 +7,15 @@ extern SPI_HandleTypeDef hspi1;
  *
  * Spi communication is not working reliably.
  * Still has many bug, not enough working parts to call the RF implementation done.
- * Will fix in future, hopefully.
+ * Todo : Add recieving raw data from the fifo buffer, Add a second screen that kinda works like a spectrum analyzer based on the rssi.
  * 
 */
 
 float rssi_dbm = 0;
 char part_num_char[8] = {0};
 char version_char[8] = {0};
+static uint32_t left_lastGetTick = 0;
+static uint32_t right_lastGetTick = 0;
 uint8_t rssi_dec = 0;
 uint8_t part_num = 0;
 uint8_t version = 0;
@@ -25,16 +27,22 @@ long map(long x, long in_min, long in_max, long out_min, long out_max)
 
 void subghz_test(u8g2_t u8g2)
 {
+    uint8_t loop = 129;
+    uint8_t curr_screen = 0;
+
     cc1101_reset(hspi1);
     cc1101_calibrate(hspi1);
 
     while (!HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_8))
     {
-        u8g2_ClearBuffer(&u8g2);
+        if (!curr_screen || loop == 128)
+        {
+            u8g2_ClearBuffer(&u8g2);
+        }
 
         cc1101_set_frequency(hspi1, 433800000);
 
-        if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_12))
+        if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_12) || curr_screen)
         {
             cc1101_switch_to_rx(hspi1);
         }
@@ -46,6 +54,32 @@ void subghz_test(u8g2_t u8g2)
         else
         {
             cc1101_switch_to_idle(hspi1);
+        }
+
+        if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_13))
+        {
+            // NAVIGATION RIGHT
+            if((HAL_GetTick() - right_lastGetTick) >= 200)
+            {
+                if (!curr_screen)
+                {
+                    curr_screen = 1;
+                    loop = 129;   
+                }
+                right_lastGetTick = HAL_GetTick();
+            }
+        }
+        else if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_15))
+        {
+            // NAVIGATION LEFT
+            if((HAL_GetTick() - left_lastGetTick) >= 200)
+            {
+                if (curr_screen)
+                {
+                    curr_screen = 0;
+                }
+                left_lastGetTick = HAL_GetTick();
+            }
         }
 
         CC1101Status state = cc1101_get_status(hspi1);
@@ -71,53 +105,74 @@ void subghz_test(u8g2_t u8g2)
             rssi_dbm = (rssi_dec)/2 - 74;
         }
 
-        u8g2_SetDrawColor(&u8g2,1);
-        u8g2_SetFont(&u8g2, u8g2_font_6x12_tr);
-        u8g2_DrawStr(&u8g2, 1, 10, "Part Num:");
-        u8g2_DrawStr(&u8g2, 54, 10, part_num_char);
-        u8g2_DrawStr(&u8g2, 1, 20, "Version Num:");
-        u8g2_DrawStr(&u8g2, 73, 20, version_char);
-        u8g2_DrawStr(&u8g2, 1, 30, "Chip State:");
-        u8g2_DrawStr(&u8g2, 67, 30, !state.CHIP_RDYn ? "Ready" : "Not Ready");
-        
-        if (state.STATE == 0b001)
+        if (curr_screen)
         {
-            u8g2_DrawStr(&u8g2, 1, 64, "RX Mode");
-        }
-        else if (state.STATE == 0b010)
-        {
-            u8g2_DrawStr(&u8g2, 1, 64, "TX Mode");    
-        }
-        else if (state.STATE == 0b000)
-        {
-            u8g2_DrawStr(&u8g2, 1, 64, "Idle");
-        }
-        else if (state.STATE == 0b011)
-        {
-            u8g2_DrawStr(&u8g2, 1, 64, "Fast TX Mode");
-        }
-        else if (state.STATE == 0b100)
-        {
-            u8g2_DrawStr(&u8g2, 1, 64, "Calibration");
-        }
-        else if (state.STATE == 0b101)
-        {
-            u8g2_DrawStr(&u8g2, 1, 64, "PLL Settling");
-        }
-        else if (state.STATE == 0b110)
-        {
-            u8g2_DrawStr(&u8g2, 1, 64, "RX FIFO Overflow");
-        }
-        else if (state.STATE == 0b111)
-        {
-            u8g2_DrawStr(&u8g2, 1, 64, "TX FIFO Underflow");
-        }
+            u8g2_SetDrawColor(&u8g2,1);
+            u8g2_SetFont(&u8g2, u8g2_font_6x12_tr);
+            u8g2_DrawStr(&u8g2, 1, 10, "RSSI Spectrum:");
+            u8g2_DrawStr(&u8g2, 1, 20, "Back: <=");
+            u8g2_SetDisplayRotation(&u8g2, &u8g2_cb_r2);
+            u8g2_DrawBox(&u8g2, loop, 0, 1, map(rssi_dbm, -120, 0, 0, 80));
+            u8g2_SetDisplayRotation(&u8g2, &u8g2_cb_r0);
 
-        if (!state.CHIP_RDYn)
+            if (loop == 0)
+            {
+                loop = 129;
+            }
+
+            loop--;
+        }
+        else
         {
-            u8g2_DrawStr(&u8g2, 88, 10, "RSSI:");
-            u8g2_DrawFrame(&u8g2, 118, 1, 10, 63);
-            u8g2_DrawBox(&u8g2, 120, 3, 6, map(rssi_dbm, -120, 0, 1, 61));
+            u8g2_SetDrawColor(&u8g2,1);
+            u8g2_SetFont(&u8g2, u8g2_font_6x12_tr);
+            u8g2_DrawStr(&u8g2, 1, 10, "Part Num:");
+            u8g2_DrawStr(&u8g2, 54, 10, part_num_char);
+            u8g2_DrawStr(&u8g2, 1, 20, "Version Num:");
+            u8g2_DrawStr(&u8g2, 73, 20, version_char);
+            u8g2_DrawStr(&u8g2, 1, 30, "Chip State:");
+            u8g2_DrawStr(&u8g2, 67, 30, !state.CHIP_RDYn ? "Ready" : "Not Ready");
+            u8g2_DrawStr(&u8g2, 1, 40, "Spectrum: =>");
+
+            if (state.STATE == 0b001)
+            {
+                u8g2_DrawStr(&u8g2, 1, 64, "RX Mode");
+            }
+            else if (state.STATE == 0b010)
+            {
+                u8g2_DrawStr(&u8g2, 1, 64, "TX Mode");    
+            }
+            else if (state.STATE == 0b000)
+            {
+                u8g2_DrawStr(&u8g2, 1, 64, "Idle");
+            }
+            else if (state.STATE == 0b011)
+            {
+                u8g2_DrawStr(&u8g2, 1, 64, "Fast TX Mode");
+            }
+            else if (state.STATE == 0b100)
+            {
+                u8g2_DrawStr(&u8g2, 1, 64, "Calibration");
+            }
+            else if (state.STATE == 0b101)
+            {
+                u8g2_DrawStr(&u8g2, 1, 64, "PLL Settling");
+            }
+            else if (state.STATE == 0b110)
+            {
+                u8g2_DrawStr(&u8g2, 1, 64, "RX FIFO Overflow");
+            }
+            else if (state.STATE == 0b111)
+            {
+                u8g2_DrawStr(&u8g2, 1, 64, "TX FIFO Underflow");
+            }
+
+            if (!state.CHIP_RDYn)
+            {
+                u8g2_DrawStr(&u8g2, 88, 10, "RSSI:");
+                u8g2_DrawFrame(&u8g2, 118, 1, 10, 63);
+                u8g2_DrawBox(&u8g2, 120, 3, 6, map(rssi_dbm, -120, 0, 1, 61));
+            }
         }
 
         u8g2_SendBuffer(&u8g2);
