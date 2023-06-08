@@ -69,9 +69,7 @@ This project aims to develop a small handheld device capable of various function
 
 F_Light stands for Free Light.
 
-* At its current stage of development, the project focuses primarily on the implementation of the menu system, which provides a user-friendly interface for accessing the device's functionalities. The RF section, responsible for the actual radio communication, is yet to be implemented.
-
-* Parts have arrived, we are back on track. I made some progress with the SPI communication with the cc1101 module but its still not reliable. Unfortunately next week i have my finals so i wont be developing for about a week.
+* At its current stage of development, the project has made significant progress on the UI implementation. The RF section, responsible for the actual radio communication, is currently in progress and being actively worked on.
 
 ## Key Features
 
@@ -245,6 +243,11 @@ Your support is highly appreciated and will be acknowledged in the project's doc
 The funds received will be used solely for the project's purposes, acquiring necessary hardware components, and supporting ongoing development efforts.
 
 Thank you for considering making a donation! I am grateful for your support.
+
+Thanks to all the donators for making all of this possible. Without your support, this project probably wouldn't see the light of day.
+
+* #### Donators
+  * Jamine16
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
