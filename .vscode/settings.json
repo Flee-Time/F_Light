@@ -10,6 +10,7 @@
         "m_back.h": "c",
         "window.h": "c",
         "display_controller.h": "c",
-        "cc1101_regs.h": "c"
+        "cc1101_regs.h": "c",
+        "cc1101.h": "c"
     }
 }

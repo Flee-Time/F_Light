@@ -1,5 +1,6 @@
 #include "applications/apps.h"
 #include "modules/cc1101/cc1101.h"
+#include "modules/cc1101/rfdriver.h"
 
 extern SPI_HandleTypeDef hspi1;
 
@@ -7,7 +8,7 @@ extern SPI_HandleTypeDef hspi1;
  *
  * Spi communication is not working reliably.
  * Still has many bug, not enough working parts to call the RF implementation done.
- * Todo : Add recieving raw data from the fifo buffer, Add a second screen that kinda works like a spectrum analyzer based on the rssi.
+ * Todo : Add recieving raw data from the fifo buffer.
  * 
 */
 
@@ -16,7 +17,7 @@ char part_num_char[8] = {0};
 char version_char[8] = {0};
 static uint32_t left_lastGetTick = 0;
 static uint32_t right_lastGetTick = 0;
-uint8_t rssi_dec = 0;
+float rssi = 0;
 uint8_t part_num = 0;
 uint8_t version = 0;
 
@@ -30,8 +31,14 @@ void subghz_test(u8g2_t u8g2)
     uint8_t loop = 129;
     uint8_t curr_screen = 0;
 
-    cc1101_reset(hspi1);
-    cc1101_calibrate(hspi1);
+    left_lastGetTick = HAL_GetTick;
+    right_lastGetTick = HAL_GetTick;
+
+    rf_init(hspi1);
+
+    cc1101_wake();
+
+    rf_set_frequency(hspi1, 433800000);
 
     while (!HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_8))
     {
@@ -39,8 +46,6 @@ void subghz_test(u8g2_t u8g2)
         {
             u8g2_ClearBuffer(&u8g2);
         }
-
-        cc1101_set_frequency(hspi1, 433800000);
 
         if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_12) || curr_screen)
         {
@@ -85,7 +90,7 @@ void subghz_test(u8g2_t u8g2)
         CC1101Status state = cc1101_get_status(hspi1);
         if (!state.CHIP_RDYn)
         {
-            rssi_dec = cc1101_get_rssi(hspi1);
+            rssi = rf_get_rssi(hspi1);
             part_num = cc1101_get_partnumber(hspi1);
             version = cc1101_get_version(hspi1);
         }
@@ -96,23 +101,14 @@ void subghz_test(u8g2_t u8g2)
         sprintf(version_char,"%0d", version);
         sprintf(part_num_char,"%0d", part_num);
 
-        if (rssi_dec >= 128 )
-        {
-            rssi_dbm = (rssi_dec - 256)/2 - 74;
-        }
-        else if (rssi_dec < 128)
-        {
-            rssi_dbm = (rssi_dec)/2 - 74;
-        }
-
-        if (curr_screen)
+        if (curr_screen) // RSSI SPECTRUM SCREEN
         {
             u8g2_SetDrawColor(&u8g2,1);
             u8g2_SetFont(&u8g2, u8g2_font_6x12_tr);
             u8g2_DrawStr(&u8g2, 1, 10, "RSSI Spectrum:");
             u8g2_DrawStr(&u8g2, 1, 20, "Back: <=");
             u8g2_SetDisplayRotation(&u8g2, &u8g2_cb_r2);
-            u8g2_DrawBox(&u8g2, loop, 0, 1, map(rssi_dbm, -120, 0, 0, 80));
+            u8g2_DrawBox(&u8g2, loop, 0, 1, map(rssi, -120, 0, 0, 80));
             u8g2_SetDisplayRotation(&u8g2, &u8g2_cb_r0);
 
             if (loop == 0)
@@ -122,7 +118,7 @@ void subghz_test(u8g2_t u8g2)
 
             loop--;
         }
-        else
+        else // MAIN SCREEN
         {
             u8g2_SetDrawColor(&u8g2,1);
             u8g2_SetFont(&u8g2, u8g2_font_6x12_tr);
@@ -171,7 +167,7 @@ void subghz_test(u8g2_t u8g2)
             {
                 u8g2_DrawStr(&u8g2, 88, 10, "RSSI:");
                 u8g2_DrawFrame(&u8g2, 118, 1, 10, 63);
-                u8g2_DrawBox(&u8g2, 120, 3, 6, map(rssi_dbm, -120, 0, 1, 61));
+                u8g2_DrawBox(&u8g2, 120, 3, 6, map(rssi, -120, 0, 1, 61));
             }
         }
 

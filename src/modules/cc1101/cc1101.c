@@ -181,3 +181,10 @@ void cc1101_flush_rx(SPI_HandleTypeDef handle) {
 void cc1101_flush_tx(SPI_HandleTypeDef handle) {
     cc1101_strobe(handle, CC1101_STROBE_SFTX);
 }
+
+void cc1101_wake()
+{
+    HAL_GPIO_WritePin(CS_GPIO_Port, CS_Pin, GPIO_PIN_RESET);
+    HAL_Delay(1);
+    HAL_GPIO_WritePin(CS_GPIO_Port, CS_Pin, GPIO_PIN_SET);
+}

@@ -170,4 +170,8 @@ uint32_t cc1101_set_frequency(SPI_HandleTypeDef handle, uint32_t value);
  */
 uint32_t cc1101_set_intermediate_frequency(SPI_HandleTypeDef handle, uint32_t value);
 
+/** Wakes up the cc1101 from sleep
+ */
+void cc1101_wake();
+
 #endif
