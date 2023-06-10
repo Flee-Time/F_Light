@@ -69,6 +69,8 @@ This project aims to develop a small handheld device capable of various function
 
 F_Light stands for Free Light.
 
+To see the prototype PCB go to **[this](https://github.com/Flee-Time/F_Light_PCB)** repo.
+
 * At its current stage of development, the project has made significant progress on the UI implementation. The RF section, responsible for the actual radio communication, is currently in progress and being actively worked on.
 
 ## Key Features
@@ -191,15 +193,15 @@ _For pictures of the device, please refer to **[here](https://github.com/Flee-Ti
 - [ ] Add RF implementation
     - [x] Add SPI functionality
     - [ ] Improve SPI functionality
-    - [ ] Write code to initialize the CC1101 module
+    - [x] Write code to initialize the CC1101 module
     - [ ] Basic RF receiving functionality
     - [ ] Basic RF transmit functionality
     - [ ] Basic RF save functionality
 - [ ] Add SD card and filesystem support for saving recorded frequencies
+- [ ] Make Prototype pcb with integrated components.
 - [ ] Switch to an RTOS
 - [ ] Rewrite everything using a more OOP approach
 - [ ] Write own hardware abstraction layer for optimization
-- [ ] Make Prototype pcb with integrated components.
 
 See the **[open issues](https://github.com/Flee-Time/F_Light/issues)** for a full list of proposed features (and known issues).
 
