@@ -34,7 +34,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include <string.h>
-#include "../lib/FatFs/ff_gen_drv.h"
+#include "third_party_libs/FatFs/ff_gen_drv.h"
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/

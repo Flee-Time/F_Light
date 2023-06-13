@@ -23,8 +23,8 @@
  extern "C" {
 #endif
 
-#include "../lib/FatFs/ff.h"
-#include "../lib/FatFs/ff_gen_drv.h"
+#include "third_party_libs/FatFs/ff.h"
+#include "third_party_libs/FatFs/ff_gen_drv.h"
 #include "user_diskio.h" /* defines USER_Driver as external */
 
 /* USER CODE BEGIN Includes */

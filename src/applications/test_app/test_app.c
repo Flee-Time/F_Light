@@ -29,4 +29,5 @@ void test_app(u8g2_t u8g2)
 
         u8g2_SendBuffer(&u8g2);
     }
+    HAL_Delay(50);
 }

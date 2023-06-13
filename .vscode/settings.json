@@ -13,6 +13,7 @@
         "cc1101_regs.h": "c",
         "cc1101.h": "c",
         "ff.h": "c",
-        "diskio.h": "c"
+        "diskio.h": "c",
+        "ff_gen_drv.h": "c"
     }
 }
