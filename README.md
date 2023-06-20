@@ -194,11 +194,13 @@ _For pictures of the device, please refer to **[here](https://github.com/Flee-Ti
     - [x] Add SPI functionality
     - [ ] Improve SPI functionality
     - [x] Write code to initialize the CC1101 module
+    - [x] Basic RF RSSI functionality
     - [ ] Basic RF receiving functionality
     - [ ] Basic RF transmit functionality
     - [ ] Basic RF save functionality
-- [ ] Add SD card and filesystem support for saving recorded frequencies
-- [ ] Make Prototype pcb with integrated components.
+- [x] Add SD card and filesystem support for saving recorded frequencies
+- [ ] Switch SD card from SPI to SDIO 1-Bit (Note: every pinout will have to change)
+- [ ] Make Prototype pcb with integrated components
 - [ ] Switch to an RTOS
 - [ ] Rewrite everything using a more OOP approach
 - [ ] Write own hardware abstraction layer for optimization
