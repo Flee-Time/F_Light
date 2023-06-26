@@ -162,20 +162,28 @@ VBAT --> CR2032_Plus
 GND  --> CR2032_Minus
 ```
 
-* RF Section (CC1101) / Not implemented yet, these pins actually do nothing right now.
+* RF Section (CC1101)
+```
+PB0 --> GD0
+PA7 --> MOSI
+PA6 --> MISO
+PA5 --> SCK
+PA4 --> CS
+```
+
+* SD Card Module
 ```
 PA7 --> MOSI
 PA6 --> MISO
 PA5 --> SCK
-PA4 --> NCS
+PA3 --> CS
 ```
-
 
 ## Prototype Device Schematics
 
 Some schematics for the prototype device im using right now, keep in mind nothing is final at this stage.
 
-Please click **[here](https://github.com/Flee-Time/F_Light/blob/master/documentation/prototype_schematic.pdf)** for the schematics.
+Please click **[here](https://github.com/Flee-Time/F_Light_PCB)** for the schematics.
 
 ## Prototype Device Images
 
@@ -199,7 +207,9 @@ _For pictures of the device, please refer to **[here](https://github.com/Flee-Ti
     - [ ] Basic RF transmit functionality
     - [ ] Basic RF save functionality
 - [x] Add SD card and filesystem support for saving recorded frequencies
-- [ ] Switch SD card from SPI to SDIO 1-Bit (Note: every pinout will have to change)
+    - [ ] Add config file for persistent options.
+    - [ ] Add saving raw rf recordings.
+    - [ ] Add loading saved raw rf recordings.
 - [ ] Make Prototype pcb with integrated components
 - [ ] Switch to an RTOS
 - [ ] Rewrite everything using a more OOP approach
