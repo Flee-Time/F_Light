@@ -71,7 +71,9 @@ F_Light stands for Free Light.
 
 To see the prototype PCB go to **[this](https://github.com/Flee-Time/F_Light_PCB)** repo.
 
-* At its current stage of development, the project has made significant progress on the UI implementation. The RF section, responsible for the actual radio communication, is currently in progress and being actively worked on.
+To see my workflow go to **[this](https://trello.com/b/z0zgr5WM)** Trello board.
+
+* At its current stage of development, the project has made significant progress on the UI implementation. The RF section and the SD Card & FileSystem support, is currently in progress and being actively worked on.
 
 ## Key Features
 
