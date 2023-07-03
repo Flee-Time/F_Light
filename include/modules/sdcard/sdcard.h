@@ -88,4 +88,52 @@ FRESULT chdir_sd(TCHAR FILE_PATH);
  */
 FRESULT getPath_sd(TCHAR* BUFF[128]);
 
+/** The openFile_sd function opens a file and makes it a global file variable.
+ *
+ * @param      FILE_PATH  - Path of the file to be open.
+ *
+ * @return     FileSystem Result
+ */
+FRESULT openFile_sd(TCHAR FILE_PATH);
+
+/** The closeFile_sd function closes the current open global file variable.
+ *
+ * @return     FileSystem Result
+ */
+FRESULT closeFile_sd();
+
+/** The readFile_sd function reads a certain amount of bytes to a buffer.
+ *
+ * @param      BUFF - A buffer for the bytes read.
+ * @param      BYTES_TO_READ - Number of bytes to be read from the currently open file. 
+ *
+ * @return     Returns the number of bytes read from the file, returns negative numbers if an error has occured.
+ */
+uint64_t readFile_sd(void* BUFF, uint64_t BYTES_TO_READ);
+
+/** The writeFile_sd function writes a specified buffer to a file.
+ *
+ * @param      BUFF - The buffer thats going to be written to a file.
+ * @param      BYTES_TO_WRITE - Size of the buffer/ The bytes to be written to the file.
+ *
+ * @return     Returns the number of bytes read from the file, returns negative numbers if an error has occured.
+ */
+uint64_t writeFile_sd(const void* BUFF, uint64_t BYTES_TO_WRITE);
+
+/** The readString_sd function reads a specified amount of the currently open file and returns it as a string.
+ *
+ * @param      SIZE_OF_READ_BUFFER - The size of the read buffer aka the read string size.
+ *
+ * @return     Returns the read string as a char array.
+ */
+TCHAR readString_sd(uint64_t SIZE_OF_READ_BUFFER);
+
+/** The putString_sd function writes the spesific char array provided to a file.
+ *
+ * @param      CHR - The char array thats going to be written to the file.
+ *
+ * @return     Returns the number of characters written to the file/negative if not successfull.
+ */
+uint64_t putString_sd(const TCHAR* CHR);
+
 #endif
