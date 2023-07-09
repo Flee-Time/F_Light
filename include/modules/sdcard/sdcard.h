@@ -136,4 +136,10 @@ TCHAR readString_sd(uint64_t SIZE_OF_READ_BUFFER);
  */
 uint64_t putString_sd(const TCHAR* CHR);
 
+/** The fileSize_sd function returns the currently open file's size.
+ *
+ * @return     Returns the currently open file's size.
+ */
+FSIZE_t fileSize_sd();
+
 #endif

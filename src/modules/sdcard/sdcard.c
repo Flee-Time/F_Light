@@ -171,3 +171,8 @@ uint64_t putString_sd(const TCHAR* CHR)
 {
     f_puts(&CHR, &fil);
 }
+
+FSIZE_t fileSize_sd()
+{
+    return f_size(&fil);
+}
