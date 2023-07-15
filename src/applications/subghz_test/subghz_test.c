@@ -38,7 +38,10 @@ void subghz_test(u8g2_t u8g2)
 
     cc1101_wake();
 
-    rf_set_frequency(hspi1, 433800000);
+    rf_set_frequency(hspi1, 433900000);
+
+    uint8_t data[10] = {0,1,2,3,4,5,6,7,8,9};
+    uint8_t buff[64];
 
     while (!HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_8))
     {
@@ -50,11 +53,16 @@ void subghz_test(u8g2_t u8g2)
         if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_12) || curr_screen)
         {
             cc1101_switch_to_rx(hspi1);
+            for (size_t i = 0; i < 64; i++)
+            {
+                buff[i] = cc1101_read_fifo(hspi1, &data, 10);
+            }
         }
         else if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_14))
         {
             cc1101_switch_to_tx(hspi1);
-            //does not transmit at this stage, just puts the cc1101 in transmit mode
+            cc1101_write_fifo(hspi1, &buff, sizeof(buff));
+            //Transmits something, not sure how to control this for now.
         }
         else
         {

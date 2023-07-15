@@ -14,6 +14,9 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+void GD0_Input();
+void GD0_Output();
+
 /** Strobe command to the device
  *
  * @param      handle  - pointer to the SPI_HandleTypeDef

@@ -7,6 +7,7 @@ void rf_init(SPI_HandleTypeDef rf_spi)
     cc1101_write_reg(rf_spi, CC1101_IOCFG0, CC1101IocfgHighImpedance);
 
     // GD0 low
+    GD0_Input();
     cc1101_write_reg(rf_spi, CC1101_IOCFG0, CC1101IocfgHW);
     while(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_0) != false)
         ;

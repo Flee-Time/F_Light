@@ -10,7 +10,18 @@
  *
 */
 
-CC1101Status cc1101_strobe(SPI_HandleTypeDef handle, uint8_t strobe) {
+void GD0_Input()
+{
+    GPIOB->MODER &= ~(GPIO_MODER_MODER0);
+}
+
+void GD0_Output()
+{
+    GPIOB->MODER |= GPIO_MODER_MODER0_0;
+}
+
+CC1101Status cc1101_strobe(SPI_HandleTypeDef handle, uint8_t strobe) 
+{
     uint8_t tx[1] = {strobe};
     CC1101Status rx[1] = {0};
 
@@ -22,7 +33,8 @@ CC1101Status cc1101_strobe(SPI_HandleTypeDef handle, uint8_t strobe) {
     return rx[0];
 }
 
-CC1101Status cc1101_write_reg(SPI_HandleTypeDef handle, uint8_t reg, uint8_t data) {
+CC1101Status cc1101_write_reg(SPI_HandleTypeDef handle, uint8_t reg, uint8_t data) 
+{
     uint8_t tx[2] = {reg, data};
     CC1101Status rx[2] = {0};
 
@@ -34,7 +46,8 @@ CC1101Status cc1101_write_reg(SPI_HandleTypeDef handle, uint8_t reg, uint8_t dat
     return rx[1];
 }
 
-CC1101Status cc1101_read_reg(SPI_HandleTypeDef handle, uint8_t reg, uint8_t* data) {
+CC1101Status cc1101_read_reg(SPI_HandleTypeDef handle, uint8_t reg, uint8_t* data) 
+{
     assert(sizeof(CC1101Status) == 1);
     uint8_t tx[2] = {reg | CC1101_READ, 0};
     CC1101Status rx[2] = {0};
@@ -48,7 +61,8 @@ CC1101Status cc1101_read_reg(SPI_HandleTypeDef handle, uint8_t reg, uint8_t* dat
     return rx[0];
 }
 
-uint32_t cc1101_set_frequency(SPI_HandleTypeDef handle, uint32_t value) {
+uint32_t cc1101_set_frequency(SPI_HandleTypeDef handle, uint32_t value) 
+{
     uint64_t real_value = (uint64_t)value * CC1101_FDIV / CC1101_QUARTZ;
 
     // Sanity check
@@ -63,7 +77,8 @@ uint32_t cc1101_set_frequency(SPI_HandleTypeDef handle, uint32_t value) {
     return (uint32_t)real_frequency;
 }
 
-uint32_t cc1101_set_intermediate_frequency(SPI_HandleTypeDef handle, uint32_t value) {
+uint32_t cc1101_set_intermediate_frequency(SPI_HandleTypeDef handle, uint32_t value) 
+{
     uint64_t real_value = value * CC1101_IFDIV / CC1101_QUARTZ;
     assert((real_value & 0xFF) == real_value);
 
@@ -74,7 +89,8 @@ uint32_t cc1101_set_intermediate_frequency(SPI_HandleTypeDef handle, uint32_t va
     return (uint32_t)real_frequency;
 }
 
-void cc1101_set_pa_table(SPI_HandleTypeDef handle, const uint8_t value[8]) {
+void cc1101_set_pa_table(SPI_HandleTypeDef handle, const uint8_t value[8]) 
+{
     uint8_t tx[9] = {CC1101_PATABLE | CC1101_BURST}; //-V1009
     CC1101Status rx[9] = {0};
 
@@ -87,7 +103,8 @@ void cc1101_set_pa_table(SPI_HandleTypeDef handle, const uint8_t value[8]) {
     assert((rx[0].CHIP_RDYn | rx[8].CHIP_RDYn) == 0);
 }
 
-uint8_t cc1101_write_fifo(SPI_HandleTypeDef handle, const uint8_t* data, uint8_t size) {
+uint8_t cc1101_write_fifo(SPI_HandleTypeDef handle, const uint8_t* data, uint8_t size) 
+{
     uint8_t buff_tx[64];
     uint8_t buff_rx[64];
     buff_tx[0] = CC1101_FIFO | CC1101_BURST;
@@ -103,7 +120,8 @@ uint8_t cc1101_write_fifo(SPI_HandleTypeDef handle, const uint8_t* data, uint8_t
     return size;
 }
 
-uint8_t cc1101_read_fifo(SPI_HandleTypeDef handle, uint8_t* data, uint8_t* size) {
+uint8_t cc1101_read_fifo(SPI_HandleTypeDef handle, uint8_t* data, uint8_t* size) 
+{
     uint8_t buff_trx[2];
     buff_trx[0] = CC1101_FIFO | CC1101_READ | CC1101_BURST;
 
@@ -128,57 +146,71 @@ uint8_t cc1101_read_fifo(SPI_HandleTypeDef handle, uint8_t* data, uint8_t* size)
 
 /*-----------------------------------------------------------------------------------*/
 
-uint8_t cc1101_get_partnumber(SPI_HandleTypeDef handle) {
+uint8_t cc1101_get_partnumber(SPI_HandleTypeDef handle) 
+{
     uint8_t partnumber = 0;
     cc1101_read_reg(handle, CC1101_STATUS_PARTNUM | CC1101_BURST, &partnumber);
     return partnumber;
 }
 
-uint8_t cc1101_get_version(SPI_HandleTypeDef handle) {
+uint8_t cc1101_get_version(SPI_HandleTypeDef handle) 
+{
     uint8_t version = 0;
     cc1101_read_reg(handle, CC1101_STATUS_VERSION | CC1101_BURST, &version);
     return version;
 }
 
-uint8_t cc1101_get_rssi(SPI_HandleTypeDef handle) {
+uint8_t cc1101_get_rssi(SPI_HandleTypeDef handle) 
+{
     uint8_t rssi = 0;
     cc1101_read_reg(handle, CC1101_STATUS_RSSI | CC1101_BURST, &rssi);
     return rssi;
 }
 
-void cc1101_reset(SPI_HandleTypeDef handle) {
+void cc1101_reset(SPI_HandleTypeDef handle) 
+{
     cc1101_strobe(handle, CC1101_STROBE_SRES);
 }
 
-CC1101Status cc1101_get_status(SPI_HandleTypeDef handle) {
+CC1101Status cc1101_get_status(SPI_HandleTypeDef handle) 
+{
     return cc1101_strobe(handle, CC1101_STROBE_SNOP);
 }
 
-void cc1101_shutdown(SPI_HandleTypeDef handle) {
+void cc1101_shutdown(SPI_HandleTypeDef handle) 
+{
     cc1101_strobe(handle, CC1101_STROBE_SPWD);
 }
 
-void cc1101_calibrate(SPI_HandleTypeDef handle) {
+void cc1101_calibrate(SPI_HandleTypeDef handle) 
+{
     cc1101_strobe(handle, CC1101_STROBE_SCAL);
 }
 
-void cc1101_switch_to_idle(SPI_HandleTypeDef handle) {
+void cc1101_switch_to_idle(SPI_HandleTypeDef handle) 
+{
     cc1101_strobe(handle, CC1101_STROBE_SIDLE);
 }
 
-void cc1101_switch_to_rx(SPI_HandleTypeDef handle) {
+void cc1101_switch_to_rx(SPI_HandleTypeDef handle) 
+{
     cc1101_strobe(handle, CC1101_STROBE_SRX);
+    GD0_Input();
 }
 
-void cc1101_switch_to_tx(SPI_HandleTypeDef handle) {
+void cc1101_switch_to_tx(SPI_HandleTypeDef handle) 
+{
     cc1101_strobe(handle, CC1101_STROBE_STX);
+    GD0_Output();
 }
 
-void cc1101_flush_rx(SPI_HandleTypeDef handle) {
+void cc1101_flush_rx(SPI_HandleTypeDef handle) 
+{
     cc1101_strobe(handle, CC1101_STROBE_SFRX);
 }
 
-void cc1101_flush_tx(SPI_HandleTypeDef handle) {
+void cc1101_flush_tx(SPI_HandleTypeDef handle) 
+{
     cc1101_strobe(handle, CC1101_STROBE_SFTX);
 }
 
