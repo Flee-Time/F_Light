@@ -2,8 +2,6 @@
 #include "modules/cc1101/cc1101.h"
 #include "modules/cc1101/rfdriver.h"
 
-extern SPI_HandleTypeDef hspi1;
-
 /*
  *
  * Spi communication is not working reliably.
@@ -34,14 +32,15 @@ void subghz_test(u8g2_t u8g2)
     left_lastGetTick = HAL_GetTick;
     right_lastGetTick = HAL_GetTick;
 
-    rf_init(hspi1);
+    
+uint8_t buffer[32];
+
+    rf_init();
 
     cc1101_wake();
+    subghz_load_preset(SubGhzPreset2FSKDev238Async);
 
-    rf_set_frequency(hspi1, 433900000);
-
-    uint8_t data[10] = {0,1,2,3,4,5,6,7,8,9};
-    uint8_t buff[64];
+    rf_set_frequency(433850000);
 
     while (!HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_8))
     {
@@ -52,21 +51,29 @@ void subghz_test(u8g2_t u8g2)
 
         if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_12) || curr_screen)
         {
-            cc1101_switch_to_rx(hspi1);
-            for (size_t i = 0; i < 64; i++)
+            cc1101_switch_to_rx();
+            
+            for (uint8_t i = 0; i < 32; i++)
             {
-                buff[i] = cc1101_read_fifo(hspi1, &data, 10);
+                buffer[i] = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_0);
+                HAL_Delay(1);
             }
         }
         else if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_14))
         {
-            cc1101_switch_to_tx(hspi1);
-            cc1101_write_fifo(hspi1, &buff, sizeof(buff));
+            cc1101_switch_to_tx();
+            //subghz_write_packet(buffer, 32);
+            for (uint8_t i = 0; i < sizeof(buffer); i++)
+            {
+                HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, buffer[i]);
+                HAL_Delay(1);
+            }
+            
             //Transmits something, not sure how to control this for now.
         }
         else
         {
-            cc1101_switch_to_idle(hspi1);
+            cc1101_switch_to_idle();
         }
 
         if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_13))
@@ -95,16 +102,16 @@ void subghz_test(u8g2_t u8g2)
             }
         }
 
-        CC1101Status state = cc1101_get_status(hspi1);
+        CC1101Status state = cc1101_get_status();
         if (!state.CHIP_RDYn)
         {
-            rssi = rf_get_rssi(hspi1);
-            part_num = cc1101_get_partnumber(hspi1);
-            version = cc1101_get_version(hspi1);
+            rssi = rf_get_rssi();
+            part_num = cc1101_get_partnumber();
+            version = cc1101_get_version();
         }
 
-        cc1101_flush_rx(hspi1);
-        cc1101_flush_tx(hspi1);
+        cc1101_flush_rx();
+        cc1101_flush_tx();
 
         sprintf(version_char,"%0d", version);
         sprintf(part_num_char,"%0d", part_num);

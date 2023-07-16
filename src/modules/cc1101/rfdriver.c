@@ -1,32 +1,47 @@
-#include "modules/cc1101/cc1101.h"
+#include "modules/cc1101/rfdriver.h"
 
-void rf_init(SPI_HandleTypeDef rf_spi)
+void rf_init()
 {
     // Reset
-    cc1101_reset(rf_spi);
-    cc1101_write_reg(rf_spi, CC1101_IOCFG0, CC1101IocfgHighImpedance);
+    cc1101_reset();
+    cc1101_write_reg(CC1101_IOCFG0, CC1101IocfgHighImpedance);
 
     // GD0 low
     GD0_Input();
-    cc1101_write_reg(rf_spi, CC1101_IOCFG0, CC1101IocfgHW);
+    cc1101_write_reg(CC1101_IOCFG0, CC1101IocfgHW);
     while(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_0) != false)
         ;
 
     // GD0 high
-    cc1101_write_reg(rf_spi, CC1101_IOCFG0, CC1101IocfgHW | CC1101_IOCFG_INV);
+    cc1101_write_reg(CC1101_IOCFG0, CC1101IocfgHW | CC1101_IOCFG_INV);
     while(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_0) != true)
         ;
 
     // Reset GD0 to floating state
-    cc1101_write_reg(rf_spi, CC1101_IOCFG0, CC1101IocfgHighImpedance);
+    cc1101_write_reg(CC1101_IOCFG0, CC1101IocfgHighImpedance);
 
     // Go to sleep
-    cc1101_shutdown(rf_spi);
+    cc1101_shutdown();
 }
 
-float rf_get_rssi(SPI_HandleTypeDef rf_spi) 
+void subghz_load_registers(uint8_t* data) {
+    cc1101_reset();
+    uint32_t i = 0;
+    while(data[i]) {
+        cc1101_write_reg(data[i], data[i + 1]);
+        i += 2;
+    }
+}
+
+void subghz_write_packet(const uint8_t* data, uint8_t size) {
+    cc1101_flush_tx();
+    cc1101_write_reg(CC1101_FIFO, size);
+    cc1101_write_fifo(data, size);
+}
+
+float rf_get_rssi() 
 {
-    int32_t rssi_dec = cc1101_get_rssi(rf_spi);
+    int32_t rssi_dec = cc1101_get_rssi();
 
     float rssi = rssi_dec;
     if(rssi_dec >= 128) {
@@ -38,18 +53,18 @@ float rf_get_rssi(SPI_HandleTypeDef rf_spi)
     return rssi;
 }
 
-uint8_t rf_get_lqi(SPI_HandleTypeDef rf_spi) {
+uint8_t rf_get_lqi() {
     uint8_t data[1];
-    cc1101_read_reg(rf_spi, CC1101_STATUS_LQI | CC1101_BURST, data);
+    cc1101_read_reg(CC1101_STATUS_LQI | CC1101_BURST, data);
     return data[0] & 0x7F;
 }
 
-uint32_t rf_set_frequency(SPI_HandleTypeDef rf_spi, uint32_t value) {
-    uint32_t real_frequency = cc1101_set_frequency(rf_spi, value);
-    cc1101_calibrate(rf_spi);
+uint32_t rf_set_frequency(uint32_t value) {
+    uint32_t real_frequency = cc1101_set_frequency(value);
+    cc1101_calibrate();
 
     while(true) {
-        CC1101Status status = cc1101_get_status(rf_spi);
+        CC1101Status status = cc1101_get_status();
         if(status.STATE == CC1101StateIDLE) break;
     }
 
@@ -64,4 +79,36 @@ bool rf_is_frequency_valid(uint32_t value) {
     }
 
     return true;
+}
+
+void subghz_sleep() {
+    cc1101_switch_to_idle();
+    cc1101_write_reg(CC1101_IOCFG0, CC1101IocfgHighImpedance);
+    GD0_Analog();
+    cc1101_shutdown();
+}
+
+
+void subghz_load_preset(SubGhzPreset preset) {
+    if(preset == SubGhzPresetOok650Async) {
+        subghz_load_registers((uint8_t*)subghz_preset_ook_650khz_async_regs);
+        cc1101_set_pa_table(subghz_preset_ook_async_patable);
+    } else if(preset == SubGhzPresetOok270Async) {
+        subghz_load_registers((uint8_t*)subghz_preset_ook_270khz_async_regs);
+        cc1101_set_pa_table(subghz_preset_ook_async_patable);
+    } else if(preset == SubGhzPreset2FSKDev238Async) {
+        subghz_load_registers(
+            (uint8_t*)subghz_preset_2fsk_dev2_38khz_async_regs);
+        cc1101_set_pa_table(subghz_preset_2fsk_async_patable);
+    } else if(preset == SubGhzPreset2FSKDev476Async) {
+        subghz_load_registers(
+            (uint8_t*)subghz_preset_2fsk_dev47_6khz_async_regs);
+        cc1101_set_pa_table(subghz_preset_2fsk_async_patable);
+    } else if(preset == SubGhzPresetMSK99_97KbAsync) {
+        subghz_load_registers((uint8_t*)subghz_preset_msk_99_97kb_async_regs);
+        cc1101_set_pa_table(subghz_preset_msk_async_patable);
+    } else if(preset == SubGhzPresetGFSK9_99KbAsync) {
+        subghz_load_registers((uint8_t*)subghz_preset_gfsk_9_99kb_async_regs);
+        cc1101_set_pa_table(subghz_preset_gfsk_async_patable);
+    }
 }
