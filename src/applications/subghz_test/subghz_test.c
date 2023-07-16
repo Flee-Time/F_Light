@@ -6,7 +6,7 @@
  *
  * Spi communication is not working reliably.
  * Still has many bug, not enough working parts to call the RF implementation done.
- * Todo : Add recieving raw data from the fifo buffer.
+ * Todo : Add hardware timers for recording raw rf data and transmission.
  * 
 */
 
