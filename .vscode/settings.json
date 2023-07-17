@@ -17,6 +17,9 @@
         "ff_gen_drv.h": "c",
         "fatfs_sd.h": "c",
         "f_spi.h": "c",
-        "rfdriver.h": "c"
+        "rfdriver.h": "c",
+        "cc1101_configs.h": "c",
+        "apps.h": "c",
+        "main.h": "c"
     }
 }

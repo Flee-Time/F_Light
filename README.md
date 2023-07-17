@@ -202,7 +202,7 @@ _For pictures of the device, please refer to **[here](https://github.com/Flee-Ti
     - [ ] Make Menu's more modular
 - [ ] Add RF implementation
     - [x] Add SPI functionality
-    - [ ] Improve SPI functionality
+    - [x] Improve SPI functionality
     - [x] Write code to initialize the CC1101 module
     - [x] Basic RF RSSI functionality
     - [ ] Basic RF receiving functionality
@@ -213,7 +213,7 @@ _For pictures of the device, please refer to **[here](https://github.com/Flee-Ti
     - [ ] Add saving raw rf recordings.
     - [ ] Add loading saved raw rf recordings.
 - [ ] Make Prototype pcb with integrated components
-- [ ] Switch to an RTOS
+- [x] Switch to an RTOS
 - [ ] Rewrite everything using a more OOP approach
 - [ ] Write own hardware abstraction layer for optimization
 
