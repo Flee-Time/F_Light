@@ -21,6 +21,8 @@ float rf_get_rssi();
 uint8_t rf_get_lqi();
 uint32_t rf_set_frequency(uint32_t value);
 bool rf_is_frequency_valid(uint32_t value);
+bool subghz_rx_pipe_not_empty();
+bool subghz_is_rx_data_crc_valid();
 void subghz_load_registers(uint8_t* data);
 void subghz_sleep();
 void subghz_load_preset(SubGhzPreset preset);

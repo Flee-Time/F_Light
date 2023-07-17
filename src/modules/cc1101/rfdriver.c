@@ -88,6 +88,28 @@ void subghz_sleep() {
     cc1101_shutdown();
 }
 
+bool subghz_rx_pipe_not_empty() {
+    CC1101RxBytes status[1];
+    cc1101_read_reg((CC1101_STATUS_RXBYTES) | CC1101_BURST, (uint8_t*)status);
+    // TODO: you can add a buffer overflow flag if needed
+    if(status->NUM_RXBYTES > 0) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+bool subghz_is_rx_data_crc_valid() {
+    uint8_t data[1];
+    cc1101_read_reg(CC1101_STATUS_LQI | CC1101_BURST, data);
+
+    if(((data[0] >> 7) & 0x01)) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 
 void subghz_load_preset(SubGhzPreset preset) {
     if(preset == SubGhzPresetOok650Async) {

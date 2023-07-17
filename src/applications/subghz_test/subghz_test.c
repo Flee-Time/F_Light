@@ -38,7 +38,7 @@ uint8_t buffer[32];
     rf_init();
 
     cc1101_wake();
-    subghz_load_preset(SubGhzPreset2FSKDev238Async);
+    subghz_load_preset(SubGhzPreset2FSKDev476Async);
 
     rf_set_frequency(433850000);
 
@@ -53,7 +53,7 @@ uint8_t buffer[32];
         {
             cc1101_switch_to_rx();
             
-            for (uint8_t i = 0; i < 32; i++)
+            for (uint8_t i = 0; i < 64; i++)
             {
                 buffer[i] = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_0);
                 HAL_Delay(1);
