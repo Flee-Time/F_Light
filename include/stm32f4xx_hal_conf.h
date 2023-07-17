@@ -53,24 +53,24 @@
 /* #define HAL_SRAM_MODULE_ENABLED */
 /* #define HAL_SDRAM_MODULE_ENABLED */
 /* #define HAL_HASH_MODULE_ENABLED */
-#define HAL_I2C_MODULE_ENABLED
+/* #define HAL_I2C_MODULE_ENABLED */
 /* #define HAL_I2S_MODULE_ENABLED */
 /* #define HAL_IWDG_MODULE_ENABLED */
 /* #define HAL_LTDC_MODULE_ENABLED */
 /* #define HAL_RNG_MODULE_ENABLED */
-#define HAL_RTC_MODULE_ENABLED
+/* #define HAL_RTC_MODULE_ENABLED */
 /* #define HAL_SAI_MODULE_ENABLED */
 #define HAL_SD_MODULE_ENABLED
 /* #define HAL_MMC_MODULE_ENABLED */
-#define HAL_SPI_MODULE_ENABLED
-/* #define HAL_TIM_MODULE_ENABLED */
+/* #define HAL_SPI_MODULE_ENABLED */
+#define HAL_TIM_MODULE_ENABLED
 /* #define HAL_UART_MODULE_ENABLED */
 /* #define HAL_USART_MODULE_ENABLED */
 /* #define HAL_IRDA_MODULE_ENABLED */
 /* #define HAL_SMARTCARD_MODULE_ENABLED */
 /* #define HAL_SMBUS_MODULE_ENABLED */
 /* #define HAL_WWDG_MODULE_ENABLED */
-/* #define HAL_PCD_MODULE_ENABLED */
+#define HAL_PCD_MODULE_ENABLED
 /* #define HAL_HCD_MODULE_ENABLED */
 /* #define HAL_DSI_MODULE_ENABLED */
 /* #define HAL_QSPI_MODULE_ENABLED */
@@ -148,7 +148,7 @@
   * @brief This is the HAL system configuration section
   */
 #define  VDD_VALUE		      3300U /*!< Value of VDD in mv */
-#define  TICK_INT_PRIORITY            15U   /*!< tick interrupt priority */
+#define  TICK_INT_PRIORITY            5U   /*!< tick interrupt priority */
 #define  USE_RTOS                     0U
 #define  PREFETCH_ENABLE              1U
 #define  INSTRUCTION_CACHE_ENABLE     1U
