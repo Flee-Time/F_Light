@@ -5,4 +5,8 @@ flags = [
    "-mfloat-abi=hard",
    "-mfpu=fpv4-sp-d16"
 ]
-env.Append(CCFLAGS=flags, LINKFLAGS=flags)
+cppdef = [
+   "USE_FULL_ASSERT",
+   "USE_FULL_LL_DRIVER"
+]
+env.Append(CCFLAGS=flags, LINKFLAGS=flags, CPPDEFINES=cppdef)
