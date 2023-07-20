@@ -32,8 +32,7 @@ void subghz_test(u8g2_t u8g2)
     left_lastGetTick = HAL_GetTick;
     right_lastGetTick = HAL_GetTick;
 
-    
-uint8_t buffer[32];
+    uint8_t buffer[32];
 
     rf_init();
 

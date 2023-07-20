@@ -137,7 +137,7 @@ uint8_t handleInput(const Menu* menu)
 {
     if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_14) && m_sel < (menu->num_items - 1))
     {
-        if((HAL_GetTick() - up_lastGetTick) >= 200)
+        if((HAL_GetTick() - up_lastGetTick) >= 300)
         {
             m_sel++;
             up_lastGetTick = HAL_GetTick();
@@ -145,7 +145,7 @@ uint8_t handleInput(const Menu* menu)
     }
     else if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_12) && m_sel > 0)
     {
-        if((HAL_GetTick() - down_lastGetTick) >= 200)
+        if((HAL_GetTick() - down_lastGetTick) >= 300)
         {
             m_sel--;
             down_lastGetTick = HAL_GetTick();
@@ -156,7 +156,7 @@ uint8_t handleInput(const Menu* menu)
     {
         if (menu->items[m_sel].action != NULL)
         {
-            if((HAL_GetTick() - confirm_lastGetTick) >= 200)
+            if((HAL_GetTick() - confirm_lastGetTick) >= 300)
             {
                 menu->items[m_sel].action(u8g2);
                 confirm_lastGetTick = HAL_GetTick();
@@ -166,7 +166,7 @@ uint8_t handleInput(const Menu* menu)
 
     if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_8) && selected_menu > 0)
     {
-        if((HAL_GetTick() - back_lastGetTick) >= 200)
+        if((HAL_GetTick() - back_lastGetTick) >= 300)
         {
             selected_menu--;
             back_lastGetTick = HAL_GetTick();
