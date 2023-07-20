@@ -9,6 +9,9 @@
 // APPS
 //#include "applications/apps.h"
 
+void initDisplay(void);
+void drawScreen(void);
+
 // Defines
 #define screen_width 128
 #define screen_height 64

@@ -58,6 +58,8 @@
 extern PCD_HandleTypeDef hpcd_USB_OTG_FS;
 extern TIM_HandleTypeDef htim11;
 
+uint8_t testVar = 0;
+
 /* USER CODE BEGIN EV */
 
 /* USER CODE END EV */
@@ -160,6 +162,26 @@ void DebugMon_Handler(void)
 /* please refer to the startup file (startup_stm32f4xx.s).                    */
 /******************************************************************************/
 
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+  testVar++;
+}
+
+/**
+  * @brief This function handles EXTI line[9:5] interrupts.
+  */
+void EXTI9_5_IRQHandler(void)
+{
+  /* USER CODE BEGIN EXTI9_5_IRQn 0 */
+
+  /* USER CODE END EXTI9_5_IRQn 0 */
+  HAL_GPIO_EXTI_IRQHandler(BUTTON_LEFT_Pin);
+  HAL_GPIO_EXTI_IRQHandler(BUTTON_BACK_Pin);
+  /* USER CODE BEGIN EXTI9_5_IRQn 1 */
+
+  /* USER CODE END EXTI9_5_IRQn 1 */
+}
+
 /**
   * @brief This function handles TIM1 trigger and commutation interrupts and TIM11 global interrupt.
   */
@@ -172,6 +194,23 @@ void TIM1_TRG_COM_TIM11_IRQHandler(void)
   /* USER CODE BEGIN TIM1_TRG_COM_TIM11_IRQn 1 */
 
   /* USER CODE END TIM1_TRG_COM_TIM11_IRQn 1 */
+}
+
+/**
+  * @brief This function handles EXTI line[15:10] interrupts.
+  */
+void EXTI15_10_IRQHandler(void)
+{
+  /* USER CODE BEGIN EXTI15_10_IRQn 0 */
+
+  /* USER CODE END EXTI15_10_IRQn 0 */
+  HAL_GPIO_EXTI_IRQHandler(BUTTON_ACTION_Pin);
+  HAL_GPIO_EXTI_IRQHandler(BUTTON_UP_Pin);
+  HAL_GPIO_EXTI_IRQHandler(BUTTON_RIGHT_Pin);
+  HAL_GPIO_EXTI_IRQHandler(BUTTON_DOWN_Pin);
+  /* USER CODE BEGIN EXTI15_10_IRQn 1 */
+
+  /* USER CODE END EXTI15_10_IRQn 1 */
 }
 
 /**

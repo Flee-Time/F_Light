@@ -27,7 +27,7 @@
 /* USER CODE BEGIN Includes */
 #include "usbd_cdc_if.h"
 #include "string.h"
-#include "display/display_controller.h"
+#include "display/dispv2.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -129,11 +129,12 @@ void StartDefaultTask(void *argument)
   /* init code for USB_DEVICE */
   MX_USB_DEVICE_Init();
   initDisplay();
+
   /* USER CODE BEGIN StartDefaultTask */
   /* Infinite loop */
   for(;;)
-  { 
-
+  {
+    drawScreen();
   }
   /* USER CODE END StartDefaultTask */
 }
@@ -144,7 +145,7 @@ void SendVCOM(void *argument)
   for (;;)
   {
     CDC_Transmit_FS((uint8_t *) data, strlen(data));
-    osDelay(1000);
+    vTaskDelay(1000);
   }
 }
 /* Private application code --------------------------------------------------*/

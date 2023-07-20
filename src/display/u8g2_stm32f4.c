@@ -18,7 +18,7 @@ uint8_t u8x8_stm32_gpio_and_delay(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int, vo
 		break;
 	case U8X8_MSG_DELAY_MILLI:
 		/* ms Delay */
-		osDelay(arg_int);
+		vTaskDelay(arg_int);
 		break;
 	}
 	return 1;
