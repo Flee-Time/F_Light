@@ -126,11 +126,6 @@ void MX_FREERTOS_Init(void) {
 /* USER CODE END Header_StartDefaultTask */
 void StartDefaultTask(void *argument)
 {
-  char showtime[8];
-  extern RTC_HandleTypeDef hrtc;
-  RTC_TimeTypeDef sTime = {0};
-  RTC_DateTypeDef sDate = {0};
-
   /* init code for USB_DEVICE */
   MX_USB_DEVICE_Init();
   initDisplay();
@@ -138,11 +133,7 @@ void StartDefaultTask(void *argument)
   /* Infinite loop */
   for(;;)
   { 
-    HAL_RTC_GetTime(&hrtc, &sTime, RTC_FORMAT_BIN);
-    HAL_RTC_GetDate(&hrtc, &sDate, RTC_FORMAT_BIN);
-    sprintf(showtime,"%0.2d:%0.2d:%0.2d", sTime.Hours, sTime.Minutes, sTime.Seconds);
 
-    drawScreen(showtime, 3);
   }
   /* USER CODE END StartDefaultTask */
 }

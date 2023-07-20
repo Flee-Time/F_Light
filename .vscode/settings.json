@@ -22,6 +22,7 @@
         "freertos.h": "c",
         "task.h": "c",
         "cmsis_os.h": "c",
-        "main.h": "c"
+        "main.h": "c",
+        "dispv2.h": "c"
     }
 }
