@@ -17,6 +17,11 @@
         "ff_gen_drv.h": "c",
         "fatfs_sd.h": "c",
         "f_spi.h": "c",
-        "rfdriver.h": "c"
+        "rfdriver.h": "c",
+        "u8g2.h": "c",
+        "freertos.h": "c",
+        "task.h": "c",
+        "cmsis_os.h": "c",
+        "main.h": "c"
     }
 }

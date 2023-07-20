@@ -64,13 +64,13 @@ void MX_GPIO_Init(void)
   /**/
   GPIO_InitStruct.Pin = BUTTON_UP_Pin|BUTTON_RIGHT_Pin|BUTTON_DOWN_Pin|SDIO_DETECT_Pin;
   GPIO_InitStruct.Mode = LL_GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
+  GPIO_InitStruct.Pull = LL_GPIO_PULL_DOWN;
   LL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
   /**/
   GPIO_InitStruct.Pin = BUTTON_LEFT_Pin|BUTTON_BACK_Pin|BUTTON_ACTION_Pin;
   GPIO_InitStruct.Mode = LL_GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
+  GPIO_InitStruct.Pull = LL_GPIO_PULL_DOWN;
   LL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
 }
