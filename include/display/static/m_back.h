@@ -93,6 +93,13 @@ char battery_empty[] = {
 
 static uint8_t* battery[] = {battery_empty, battery_low, battery_medium, battery_full};
 
+#define button_icon_width 8
+#define button_icon_height 8
+
+static char button_released[] = { 0x3c,0x42,0x81,0x81,0x81,0x81,0x42,0x3c };
+
+static char button_pressed[] = { 0x3c,0x7e,0xff,0xff,0xff,0xff,0x7e,0x3c };
+
 #define menu_item_width 120
 #define menu_item_height 16
 

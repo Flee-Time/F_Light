@@ -33,12 +33,16 @@ void initDisplay()
 	u8g2_SetPowerSave(&u8g2, 0);
 }
 
-extern uint8_t testVar;
+extern uint8_t upPressed;
+extern uint8_t downPressed;
+extern uint8_t leftPressed;
+extern uint8_t rightPressed;
+extern uint8_t actionPressed;
+extern uint8_t cancelPressed;
 
 void drawScreen()
 {   
     char showtime[8];
-    char pinno[8];
     extern RTC_HandleTypeDef hrtc;
     RTC_TimeTypeDef sTime = {0};
     RTC_DateTypeDef sDate = {0};
@@ -62,9 +66,10 @@ void drawScreen()
     *
     */
 
-    sprintf(pinno,"%d", testVar);
-
-    u8g2_DrawStr(&u8g2, 30, 30, pinno);
+    u8g2_DrawXBM(&u8g2, 60, 16, button_icon_width, button_icon_height, upPressed ? button_pressed : button_released);
+    u8g2_DrawXBM(&u8g2, 60, 48, button_icon_width, button_icon_height, downPressed ? button_pressed : button_released);
+    u8g2_DrawXBM(&u8g2, 44, 32, button_icon_width, button_icon_height, leftPressed ? button_pressed : button_released);
+    u8g2_DrawXBM(&u8g2, 76, 32, button_icon_width, button_icon_height, rightPressed ? button_pressed : button_released);
 
     u8g2_SendBuffer(&u8g2);
 }

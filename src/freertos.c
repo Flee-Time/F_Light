@@ -57,11 +57,18 @@ const osThreadAttr_t defaultTask_attributes = {
   .priority = (osPriority_t) osPriorityNormal,
 };
 
+osThreadId_t ButtonTaskHandle;
+const osThreadAttr_t ButtonTask_attributes = {
+  .name = "BUTTON",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityNormal,
+};
+
 osThreadId_t VCOMTaskHandle;
 const osThreadAttr_t VCOMTask_attributes = {
   .name = "VCOM",
   .stack_size = 128 * 4,
-  .priority = (osPriority_t) osPriorityLow,
+  .priority = (osPriority_t) osPriorityNormal,
 };
 
 /* Private function prototypes -----------------------------------------------*/
@@ -71,9 +78,17 @@ const osThreadAttr_t VCOMTask_attributes = {
 
 void StartDefaultTask(void *argument);
 void SendVCOM(void *argument);
+void HandleButtons(void *argument);
 
 extern void MX_USB_DEVICE_Init(void);
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
+
+uint8_t upPressed;
+uint8_t downPressed;
+uint8_t leftPressed;
+uint8_t rightPressed;
+uint8_t actionPressed;
+uint8_t cancelPressed;
 
 /**
   * @brief  FreeRTOS initialization
@@ -105,7 +120,9 @@ void MX_FREERTOS_Init(void) {
   /* creation of defaultTask */
   defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
 
-  VCOMTaskHandle = osThreadNew(SendVCOM, NULL, &VCOMTask_attributes);
+  ButtonTaskHandle = osThreadNew(HandleButtons, NULL, &ButtonTask_attributes);
+
+  //VCOMTaskHandle = osThreadNew(SendVCOM, NULL, &VCOMTask_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -135,8 +152,23 @@ void StartDefaultTask(void *argument)
   for(;;)
   {
     drawScreen();
+    taskYIELD();
   }
   /* USER CODE END StartDefaultTask */
+}
+
+void HandleButtons(void *argument)
+{
+  for (;;)
+  {
+    upPressed = HAL_GPIO_ReadPin(BUTTON_UP_GPIO_Port, BUTTON_UP_Pin);
+    downPressed = HAL_GPIO_ReadPin(BUTTON_DOWN_GPIO_Port, BUTTON_DOWN_Pin);
+    leftPressed = HAL_GPIO_ReadPin(BUTTON_LEFT_GPIO_Port, BUTTON_LEFT_Pin);
+    rightPressed = HAL_GPIO_ReadPin(BUTTON_RIGHT_GPIO_Port, BUTTON_RIGHT_Pin);
+    actionPressed = HAL_GPIO_ReadPin(BUTTON_ACTION_GPIO_Port, BUTTON_ACTION_Pin);
+    cancelPressed = HAL_GPIO_ReadPin(BUTTON_BACK_GPIO_Port, BUTTON_BACK_Pin);
+    taskYIELD();
+  }
 }
 
 void SendVCOM(void *argument)
@@ -146,6 +178,7 @@ void SendVCOM(void *argument)
   {
     CDC_Transmit_FS((uint8_t *) data, strlen(data));
     vTaskDelay(1000);
+    taskYIELD();
   }
 }
 /* Private application code --------------------------------------------------*/
