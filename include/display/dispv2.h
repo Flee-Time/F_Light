@@ -30,4 +30,6 @@ typedef struct {
     size_t num_items;
 } Menu;
 
+void drawMainMenu(const Menu* menu);
+
 #endif

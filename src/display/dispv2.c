@@ -7,6 +7,11 @@ uint8_t *buf;
 extern uint8_t u8x8_stm32_gpio_and_delay(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int, void *arg_ptr);
 extern uint8_t u8x8_byte_stm32_hw_i2c(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int, void *arg_ptr);
 
+static uint32_t up_lastGetTick = 0;
+static uint32_t down_lastGetTick = 0;
+static uint32_t confirm_lastGetTick = 0;
+static uint32_t back_lastGetTick = 0;
+
 //uint8_t getBatteryLevel(void);
 
 // Main Menu
@@ -72,4 +77,84 @@ void drawScreen()
     u8g2_DrawXBM(&u8g2, 76, 32, button_icon_width, button_icon_height, rightPressed ? button_pressed : button_released);
 
     u8g2_SendBuffer(&u8g2);
+}
+
+uint8_t m_sel = 0;
+
+uint8_t menuSelectionHandler(const Menu* menu)
+{
+    if (upPressed && m_sel < (menu->num_items - 1))
+    {
+        if((HAL_GetTick() - up_lastGetTick) >= 300)
+        {
+            m_sel++;
+            up_lastGetTick = HAL_GetTick();
+        }
+    }
+    else if (downPressed && m_sel > 0)
+    {
+        if((HAL_GetTick() - down_lastGetTick) >= 300)
+        {
+            m_sel--;
+            down_lastGetTick = HAL_GetTick();
+        }
+    }
+
+    if (actionPressed)
+    {
+        if (menu->items[m_sel].action != NULL)
+        {
+            if((HAL_GetTick() - confirm_lastGetTick) >= 300)
+            {
+                //menu->items[m_sel].action(u8g2);
+                confirm_lastGetTick = HAL_GetTick();
+            }
+        }
+    }
+
+    /*
+    if (cancelPressed && selected_menu > 0)
+    {
+        if((HAL_GetTick() - back_lastGetTick) >= 300)
+        {
+            selected_menu--;
+            back_lastGetTick = HAL_GetTick();
+        }
+    }
+    */
+
+    return m_sel;
+}
+
+void drawMainMenu(const Menu* menu)
+{
+  for(;;)
+  {
+    uint8_t y_offset = 0;
+
+    uint8_t selection = menuSelectionHandler(menu);
+
+    u8g2_SetDrawColor(&u8g2,1);
+    u8g2_SetFont(&u8g2, u8g2_font_6x10_tr);
+    u8g2_DrawStr(&u8g2, 65, 9, menu->title);
+    u8g2_DrawBox(&u8g2, 124, 5 + 54.5/menu->num_items * selection, 3, 54.5/menu->num_items);
+
+    for (int i = (selection < (menu->num_items - 1) ? (selection < 1 ? 0 : (selection - 1)) : (selection - 2)); i < menu->num_items; i++)
+    {
+        u8g2_SetDrawColor(&u8g2, 1);
+        u8g2_DrawXBM(&u8g2, 1, 12 + y_offset, menu_item_width, menu_item_height, selection == i ? menu_item_highlighted : menu_item);
+
+        if (menu->items[i].menuIcon != NULL)
+        {
+            u8g2_SetDrawColor(&u8g2, selection == i ? 0 : 1);
+            u8g2_DrawXBM(&u8g2, 5, 14 + y_offset, menu_icon_width, menu_icon_height, menu->items[i].menuIcon);
+        }
+
+        u8g2_SetDrawColor(&u8g2, selection == i ? 0 : 1);
+        u8g2_SetFont(&u8g2, u8g2_font_6x10_tr);
+        u8g2_DrawStr(&u8g2, 20, 23 + y_offset, menu->items[i].label);
+        u8g2_SetDrawColor(&u8g2,0);
+        y_offset += 18;
+    }
+  }
 }
