@@ -22,6 +22,7 @@
 #include "task.h"
 #include "main.h"
 #include "cmsis_os.h"
+#include "tasks.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -49,34 +50,6 @@
 /* USER CODE BEGIN Variables */
 
 /* USER CODE END Variables */
-/* Definitions for defaultTask */
-osThreadId_t defaultTaskHandle;
-const osThreadAttr_t defaultTask_attributes = {
-  .name = "defaultTask",
-  .stack_size = 128 * 4,
-  .priority = (osPriority_t) osPriorityNormal,
-};
-
-osThreadId_t ButtonTaskHandle;
-const osThreadAttr_t ButtonTask_attributes = {
-  .name = "BUTTON",
-  .stack_size = 128 * 4,
-  .priority = (osPriority_t) osPriorityAboveNormal,
-};
-
-osThreadId_t VCOMTaskHandle;
-const osThreadAttr_t VCOMTask_attributes = {
-  .name = "VCOM",
-  .stack_size = 128 * 4,
-  .priority = (osPriority_t) osPriorityNormal,
-};
-
-osThreadId_t MenuListTaskHandle;
-const osThreadAttr_t MenuListTask_attributes = {
-  .name = "MenuSystem",
-  .stack_size = 128 * 4,
-  .priority = (osPriority_t) osPriorityNormal,
-};
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -128,8 +101,6 @@ void MX_FREERTOS_Init(void) {
   defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
 
   ButtonTaskHandle = osThreadNew(HandleButtons, NULL, &ButtonTask_attributes);
-
-  MenuListTaskHandle = osThreadNew(drawMainMenu, NULL, &MenuListTask_attributes);
 
   //VCOMTaskHandle = osThreadNew(SendVCOM, NULL, &VCOMTask_attributes);
 

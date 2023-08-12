@@ -3,11 +3,10 @@
 
 // Includes
 #include "stm32f4xx_hal.h"
+#include "cmsis_os.h"
 #include <u8g2.h>
 #include <stdio.h>
-
-// APPS
-//#include "applications/apps.h"
+#include "apps/apps.h"
 
 void initDisplay(void);
 void drawScreen(void);
@@ -16,12 +15,10 @@ void drawScreen(void);
 #define screen_width 128
 #define screen_height 64
 
-typedef void (*MenuAction)(u8g2_t u8g2);
-
 typedef struct {
     const char* label;
     const char* menuIcon;
-    MenuAction action;
+    osThreadFunc_t action;
 } MenuItem;
 
 typedef struct {

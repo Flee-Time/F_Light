@@ -1,6 +1,8 @@
 #include "display/dispv2.h"
 #include "display/static/m_back.h"
 
+extern osThreadId_t defaultTaskHandle;
+
 static u8g2_t u8g2;
 uint8_t *buf;
 
@@ -12,13 +14,20 @@ static uint32_t down_lastGetTick = 0;
 static uint32_t confirm_lastGetTick = 0;
 static uint32_t back_lastGetTick = 0;
 
+osThreadId_t appTaskHandle;
+const osThreadAttr_t appTask_attributes = {
+  .name = "appThread",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityNormal,
+};
+
 //uint8_t getBatteryLevel(void);
 
 // Main Menu
 MenuItem menuItems[] = {
     {"Subghz Test", NULL, NULL},
-    {"Option 2", NULL, NULL},
-    {"System Settings", settings_icon, NULL},
+    {"Date/Time App", NULL, datetime_app},
+    {"Icon Test", settings_icon, NULL},
     {"Option 4", NULL, NULL},
     {"Option 5", NULL, NULL}
 };
@@ -71,10 +80,14 @@ void drawScreen()
     *
     */
 
+    drawMainMenu(&mainMenu);
+
+    /*
     u8g2_DrawXBM(&u8g2, 60, 16, button_icon_width, button_icon_height, upPressed ? button_pressed : button_released);
     u8g2_DrawXBM(&u8g2, 60, 48, button_icon_width, button_icon_height, downPressed ? button_pressed : button_released);
     u8g2_DrawXBM(&u8g2, 44, 32, button_icon_width, button_icon_height, leftPressed ? button_pressed : button_released);
     u8g2_DrawXBM(&u8g2, 76, 32, button_icon_width, button_icon_height, rightPressed ? button_pressed : button_released);
+    */
 
     u8g2_SendBuffer(&u8g2);
 }
@@ -106,7 +119,9 @@ uint8_t menuSelectionHandler(const Menu* menu)
         {
             if((HAL_GetTick() - confirm_lastGetTick) >= 300)
             {
-                //menu->items[m_sel].action(u8g2);
+                appTaskHandle = osThreadNew(menu->items[m_sel].action, &u8g2, &appTask_attributes);
+                vTaskDelay(15);
+                osThreadSuspend(defaultTaskHandle);
                 confirm_lastGetTick = HAL_GetTick();
             }
         }
