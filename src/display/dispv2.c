@@ -25,7 +25,7 @@ const osThreadAttr_t appTask_attributes = {
 
 // Main Menu
 MenuItem menuItems[] = {
-    {"Subghz Test", NULL, NULL},
+    {"Subghz Test", NULL, subghz_test},
     {"Date/Time App", NULL, datetime_app},
     {"Icon Test", settings_icon, NULL},
     {"Option 4", NULL, NULL},
