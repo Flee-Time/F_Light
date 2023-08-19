@@ -75,6 +75,8 @@ To see my workflow go to **[this](https://trello.com/b/z0zgr5WM)** Trello board.
 
 * At its current stage of development, the project has made significant progress on the UI implementation. The RF section and the SD Card & FileSystem support, is currently in progress and being actively worked on.
 
+* Currently my internship and university is starting so i wont be able to update this repo as much as i do. There will still be updates but much less frequent.
+
 ## Key Features
 
 * **433MHz Communication:** The device is designed to work within the 433MHz frequency range, enabling it to interact with a variety of radio devices operating on this frequency.
