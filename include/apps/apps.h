@@ -6,5 +6,6 @@
 
 // App Calls
 void datetime_app(u8g2_t *u8g2);
+void subghz_test(u8g2_t *u8g2);
 
 #endif
