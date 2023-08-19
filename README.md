@@ -198,13 +198,13 @@ _For pictures of the device, please refer to **[here](https://github.com/Flee-Ti
 
 - [x] Update Readme
 - [x] Add documentation
-- [ ] Improve code readability
-- [ ] Improve UI & UX
+- [x] Improve code readability
+- [x] Improve UI & UX
     - [x] Finish Time & Date setttings app
-    - [ ] Make Menu's more modular
+    - [x] Make Menu's more modular
 - [ ] Add RF implementation
     - [x] Add SPI functionality
-    - [ ] Improve SPI functionality
+    - [x] Improve SPI functionality
     - [x] Write code to initialize the CC1101 module
     - [x] Basic RF RSSI functionality
     - [ ] Basic RF receiving functionality
@@ -214,8 +214,8 @@ _For pictures of the device, please refer to **[here](https://github.com/Flee-Ti
     - [ ] Add config file for persistent options.
     - [ ] Add saving raw rf recordings.
     - [ ] Add loading saved raw rf recordings.
-- [ ] Make Prototype pcb with integrated components
-- [ ] Switch to an RTOS
+- [X] Make Prototype pcb with integrated components
+- [X] Switch to an RTOS
 - [ ] Rewrite everything using a more OOP approach
 - [ ] Write own hardware abstraction layer for optimization
 
