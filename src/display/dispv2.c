@@ -96,7 +96,7 @@ uint8_t m_sel = 0;
 
 uint8_t menuSelectionHandler(const Menu* menu)
 {
-    if (upPressed && m_sel < (menu->num_items - 1))
+    if (downPressed && m_sel < (menu->num_items - 1))
     {
         if((HAL_GetTick() - up_lastGetTick) >= 300)
         {
@@ -104,7 +104,7 @@ uint8_t menuSelectionHandler(const Menu* menu)
             up_lastGetTick = HAL_GetTick();
         }
     }
-    else if (downPressed && m_sel > 0)
+    else if (upPressed && m_sel > 0)
     {
         if((HAL_GetTick() - down_lastGetTick) >= 300)
         {
@@ -121,7 +121,7 @@ uint8_t menuSelectionHandler(const Menu* menu)
             {
                 appTaskHandle = osThreadNew(menu->items[m_sel].action, &u8g2, &appTask_attributes);
                 vTaskDelay(15);
-                osThreadSuspend(defaultTaskHandle);
+                //osThreadSuspend(defaultTaskHandle);
                 confirm_lastGetTick = HAL_GetTick();
             }
         }
@@ -143,33 +143,25 @@ uint8_t menuSelectionHandler(const Menu* menu)
 
 void drawMainMenu(const Menu* menu)
 {
-  for(;;)
-  {
-    uint8_t y_offset = 0;
-
-    uint8_t selection = menuSelectionHandler(menu);
-
+    uint8_t y_offset = 0;   
+    uint8_t selection = menuSelectionHandler(menu); 
     u8g2_SetDrawColor(&u8g2,1);
     u8g2_SetFont(&u8g2, u8g2_font_6x10_tr);
     u8g2_DrawStr(&u8g2, 65, 9, menu->title);
-    u8g2_DrawBox(&u8g2, 124, 5 + 54.5/menu->num_items * selection, 3, 54.5/menu->num_items);
-
+    u8g2_DrawBox(&u8g2, 124, 5 + 54.5/menu->num_items * selection, 3, 54.5/menu->num_items);    
     for (int i = (selection < (menu->num_items - 1) ? (selection < 1 ? 0 : (selection - 1)) : (selection - 2)); i < menu->num_items; i++)
     {
         u8g2_SetDrawColor(&u8g2, 1);
-        u8g2_DrawXBM(&u8g2, 1, 12 + y_offset, menu_item_width, menu_item_height, selection == i ? menu_item_highlighted : menu_item);
-
+        u8g2_DrawXBM(&u8g2, 1, 12 + y_offset, menu_item_width, menu_item_height, selection == i ? menu_item_highlighted : menu_item);   
         if (menu->items[i].menuIcon != NULL)
         {
             u8g2_SetDrawColor(&u8g2, selection == i ? 0 : 1);
             u8g2_DrawXBM(&u8g2, 5, 14 + y_offset, menu_icon_width, menu_icon_height, menu->items[i].menuIcon);
-        }
-
+        }   
         u8g2_SetDrawColor(&u8g2, selection == i ? 0 : 1);
         u8g2_SetFont(&u8g2, u8g2_font_6x10_tr);
         u8g2_DrawStr(&u8g2, 20, 23 + y_offset, menu->items[i].label);
         u8g2_SetDrawColor(&u8g2,0);
         y_offset += 18;
     }
-  }
 }

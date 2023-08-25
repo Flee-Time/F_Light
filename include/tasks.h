@@ -16,7 +16,7 @@ osThreadId_t ButtonTaskHandle;
 const osThreadAttr_t ButtonTask_attributes = {
   .name = "BUTTON",
   .stack_size = 128 * 4,
-  .priority = (osPriority_t) osPriorityAboveNormal,
+  .priority = (osPriority_t) osPriorityNormal,
 };
 
 osThreadId_t VCOMTaskHandle;
