@@ -128,6 +128,7 @@ STLink clone
 STM32F411CEU6 BLACK PILL / WeAct Black Pill V2.0
 Fake SSD1306 1.3" OLED Display (Has a sh1106 controller inside)
 CC1101 433MHz module
+SdCard Breakout (Not a spi sdcard module)
 6 Buttons
 ```
 
@@ -135,19 +136,19 @@ To properly connect the various components of the handheld device, the following
 
 * Buttons
 ```
-3v3  --> all_buttons
+3v3  --> All Buttons
 PB12 --> up_button
 PB13 --> right_button
 PB14 --> down_button
-PB15 --> left_button
-PA8  --> back_button
-PA9  --> action_button
+PA8  --> left_button
+PA9  --> back_button
+PA10 --> action_button
 ```
 
 * OLED Display (SSD1306/SH1106)
 ```
 PB6 --> SCL
-PB7 --> SDA
+PB9 --> SDA
 3v3 --> VCC
 GND --> GND
 ```
@@ -170,17 +171,23 @@ GND  --> CR2032_Minus
 ```
 PB0 --> GD0
 PA7 --> MOSI
-PA6 --> MISO
+PB4 --> MISO
 PA5 --> SCK
 PA4 --> CS
 ```
 
 * SD Card Module
 ```
-PA7 --> MOSI
-PA6 --> MISO
-PA5 --> SCK
-PA3 --> CS
+PA6  --> SDIO_CMD
+PB7  --> SDIO_D0
+PB15 --> SDIO_CK
+PB8  --> SDIO_DETECT
+```
+
+* UART
+```
+PA2 --> TX
+PA3 --> RX
 ```
 
 ## Prototype Device Schematics
