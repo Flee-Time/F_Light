@@ -2,7 +2,6 @@
 #include "d_images.h"
 
 extern RTC_HandleTypeDef hrtc;
-extern osThreadId_t defaultTaskHandle;
 
 static RTC_TimeTypeDef appTime = {0};
 static RTC_TimeTypeDef setTime = {0};
@@ -35,7 +34,7 @@ void set_date(RTC_DateTypeDef date);
 void reset_time(void);
 void reset_date(void);
 
-void datetime_app(u8g2_t *u8g2)
+void datetime_app(u8g2_t u8g2)
 {
     static uint8_t selected_time_frame = 0;
     static uint8_t initialized = 0;
@@ -49,8 +48,6 @@ void datetime_app(u8g2_t *u8g2)
 
     while (!cancelPressed)
     {
-        taskYIELD();
-
         uint8_t preview_time[] = {
             (setTime.Hours / 10) % 10,
             setTime.Hours % 10,
@@ -87,6 +84,7 @@ void datetime_app(u8g2_t *u8g2)
 
         u8g2_DrawLine(&u8g2, 0, 54, 128, 54);
         u8g2_SetFont(&u8g2, u8g2_font_6x10_tr);
+        u8g2_SetDrawColor(&u8g2, 1);
         u8g2_DrawStr(&u8g2, 2, 63, "Cancel");
         u8g2_DrawStr(&u8g2, 84, 63, "Confirm");
 
@@ -409,7 +407,6 @@ void datetime_app(u8g2_t *u8g2)
         u8g2_SendBuffer(&u8g2);
     }
     vTaskDelay(50);
-    osThreadResume(defaultTaskHandle);
 }
 
 void reset_time()
