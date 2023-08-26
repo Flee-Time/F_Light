@@ -127,11 +127,27 @@ void StartDefaultTask(void *argument)
   MX_USB_DEVICE_Init();
   initDisplay();
 
+  extern u8g2_t u8g2;
+  extern MenuAction appFunc;
+
   /* USER CODE BEGIN StartDefaultTask */
   /* Infinite loop */
   for(;;)
   {
-    drawScreen();
+    if (appFunc != NULL)
+    {
+      appFunc(u8g2);
+    }
+    else
+    {
+      drawScreen();
+    }
+
+    if (cancelPressed)
+    {
+      appFunc = NULL;
+    }
+
     taskYIELD();
   }
   /* USER CODE END StartDefaultTask */
