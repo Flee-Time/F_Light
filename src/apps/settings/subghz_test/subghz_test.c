@@ -11,7 +11,6 @@
 */
 
 extern RTC_HandleTypeDef hrtc;
-extern osThreadId_t defaultTaskHandle;
 
 extern uint8_t upPressed;
 extern uint8_t downPressed;
@@ -34,7 +33,7 @@ long map(long x, long in_min, long in_max, long out_min, long out_max)
   return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
 
-void subghz_test(u8g2_t *u8g2)
+void subghz_test(u8g2_t u8g2)
 {
     uint8_t loop = 129;
     uint8_t curr_screen = 0;
@@ -198,5 +197,4 @@ void subghz_test(u8g2_t *u8g2)
         u8g2_SendBuffer(&u8g2);
     }
     vTaskDelay(50);
-    osThreadResume(defaultTaskHandle);
 }
