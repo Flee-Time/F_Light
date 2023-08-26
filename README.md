@@ -198,7 +198,7 @@ Please click **[here](https://github.com/Flee-Time/F_Light_PCB)** for the schema
 
 ## Prototype Device Images
 
-_For pictures of the device, please refer to **[here](https://github.com/Flee-Time/F_Light/blob/master/documentation/device_pictures/PICS.md)**_
+_For pictures of the device, please refer to **[here](https://github.com/Flee-Time/F_Light/blob/F_Light_RTOS/documentation/device_pictures/PICS.md)**_
 
 <!-- ROADMAP -->
 ## Roadmap
