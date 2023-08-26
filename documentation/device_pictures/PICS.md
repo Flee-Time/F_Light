@@ -13,6 +13,10 @@
 </div>
 
 <div align="center">
+    <b style="font-size: 20px;">Picture of the device, with the new pcb board</b> <br />
+    <img src="new1.jpg" width="400"> <br />
+    <b style="font-size: 20px;">Picture of the back of the device, with the new pcb board</b> <br />
+    <img src="new2.jpg" width="400"> <br />
     <b style="font-size: 20px;">Picture of the device</b> <br />
     <img src="device1.jpg" width="400"> <br />
     <b style="font-size: 20px;">Side picture of the device</b> <br />
