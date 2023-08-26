@@ -86,12 +86,17 @@ void NMI_Handler(void)
 void HardFault_Handler(void)
 {
   /* USER CODE BEGIN HardFault_IRQn 0 */
-
+  static uint32_t LED_lastGetTick = 0;
+  static uint32_t vTick = 0;
   /* USER CODE END HardFault_IRQn 0 */
   while (1)
   {
-    /* USER CODE BEGIN W1_HardFault_IRQn 0 */
-    /* USER CODE END W1_HardFault_IRQn 0 */
+    if((vTick - LED_lastGetTick) >= 2000000)
+    {
+      HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
+      LED_lastGetTick = vTick;
+    }
+    vTick++;
   }
 }
 
