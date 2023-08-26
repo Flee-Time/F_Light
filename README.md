@@ -246,7 +246,7 @@ If you have a suggestion that would make this better, please fork the repo and c
 <!-- LICENSE -->
 ## License
 
-This project is licensed under the GPL-3.0 License. Feel free to use, modify, and distribute the code according to the terms of the license. See **[LICENSE](https://github.com/Flee-Time/F_Light/blob/master/LICENSE)** for more information.
+This project is licensed under the GPL-3.0 License. Feel free to use, modify, and distribute the code according to the terms of the license. See **[LICENSE](https://github.com/Flee-Time/F_Light/blob/F_Light_RTOS/LICENSE)** for more information.
 
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
