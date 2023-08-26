@@ -1,9 +1,7 @@
 #include "display/dispv2.h"
 #include "display/static/m_back.h"
 
-extern osThreadId_t defaultTaskHandle;
-
-static u8g2_t u8g2;
+u8g2_t u8g2;
 uint8_t *buf;
 
 extern uint8_t u8x8_stm32_gpio_and_delay(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int, void *arg_ptr);
@@ -11,15 +9,9 @@ extern uint8_t u8x8_byte_stm32_hw_i2c(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int
 
 static uint32_t up_lastGetTick = 0;
 static uint32_t down_lastGetTick = 0;
-static uint32_t confirm_lastGetTick = 0;
 static uint32_t back_lastGetTick = 0;
 
-osThreadId_t appTaskHandle;
-const osThreadAttr_t appTask_attributes = {
-  .name = "appThread",
-  .stack_size = 128 * 4,
-  .priority = (osPriority_t) osPriorityNormal,
-};
+MenuAction appFunc = NULL;
 
 //uint8_t getBatteryLevel(void);
 
@@ -92,6 +84,18 @@ void drawScreen()
     u8g2_SendBuffer(&u8g2);
 }
 
+/*MenuAction getAppFunc()
+{
+    if (appFunc != NULL)
+    {
+        return appFunc;
+    }
+    else
+    {
+        return NULL;
+    }
+}*/
+
 uint8_t m_sel = 0;
 
 uint8_t menuSelectionHandler(const Menu* menu)
@@ -117,13 +121,7 @@ uint8_t menuSelectionHandler(const Menu* menu)
     {
         if (menu->items[m_sel].action != NULL)
         {
-            if((HAL_GetTick() - confirm_lastGetTick) >= 300)
-            {
-                appTaskHandle = osThreadNew(menu->items[m_sel].action, &u8g2, &appTask_attributes);
-                vTaskDelay(15);
-                //osThreadSuspend(defaultTaskHandle);
-                confirm_lastGetTick = HAL_GetTick();
-            }
+            appFunc = menu->items[m_sel].action;
         }
     }
 

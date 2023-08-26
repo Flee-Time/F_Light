@@ -15,10 +15,12 @@ void drawScreen(void);
 #define screen_width 128
 #define screen_height 64
 
+typedef void (*MenuAction)(u8g2_t u8g2);
+
 typedef struct {
     const char* label;
     const char* menuIcon;
-    osThreadFunc_t action;
+    MenuAction action;
 } MenuItem;
 
 typedef struct {
@@ -28,5 +30,6 @@ typedef struct {
 } Menu;
 
 void drawMainMenu(const Menu* menu);
+//MenuAction getAppFunc();
 
 #endif
