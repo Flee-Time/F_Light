@@ -1,6 +1,8 @@
 #include "modules/cc1101/rfdriver.h"
 
 // Needs complete rewrite from flipper zero source code to work with FreeRTOS.
+// Seems to lead to a hardfault error with the current app structure calling these functions.
+// need to understand why its happening and fix. Tomorrow will fix it need sleep
 
 void rf_init()
 {
