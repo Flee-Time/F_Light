@@ -7,7 +7,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2023 STMicroelectronics.
+  * Copyright (c) 2024 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -28,18 +28,6 @@ extern "C" {
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_hal.h"
-
-#include "stm32f4xx_ll_tim.h"
-#include "stm32f4xx_ll_usart.h"
-#include "stm32f4xx_ll_rcc.h"
-#include "stm32f4xx_ll_system.h"
-#include "stm32f4xx_ll_gpio.h"
-#include "stm32f4xx_ll_exti.h"
-#include "stm32f4xx_ll_bus.h"
-#include "stm32f4xx_ll_cortex.h"
-#include "stm32f4xx_ll_utils.h"
-#include "stm32f4xx_ll_pwr.h"
-#include "stm32f4xx_ll_dma.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -75,22 +63,16 @@ void Error_Handler(void);
 #define CC1101_CS_GPIO_Port GPIOA
 #define BUTTON_UP_Pin GPIO_PIN_12
 #define BUTTON_UP_GPIO_Port GPIOB
-#define BUTTON_UP_EXTI_IRQn EXTI15_10_IRQn
 #define BUTTON_RIGHT_Pin GPIO_PIN_13
 #define BUTTON_RIGHT_GPIO_Port GPIOB
-#define BUTTON_RIGHT_EXTI_IRQn EXTI15_10_IRQn
 #define BUTTON_DOWN_Pin GPIO_PIN_14
 #define BUTTON_DOWN_GPIO_Port GPIOB
-#define BUTTON_DOWN_EXTI_IRQn EXTI15_10_IRQn
 #define BUTTON_LEFT_Pin GPIO_PIN_8
 #define BUTTON_LEFT_GPIO_Port GPIOA
-#define BUTTON_LEFT_EXTI_IRQn EXTI9_5_IRQn
 #define BUTTON_BACK_Pin GPIO_PIN_9
 #define BUTTON_BACK_GPIO_Port GPIOA
-#define BUTTON_BACK_EXTI_IRQn EXTI9_5_IRQn
 #define BUTTON_ACTION_Pin GPIO_PIN_10
 #define BUTTON_ACTION_GPIO_Port GPIOA
-#define BUTTON_ACTION_EXTI_IRQn EXTI15_10_IRQn
 #define SDIO_DETECT_Pin GPIO_PIN_8
 #define SDIO_DETECT_GPIO_Port GPIOB
 
